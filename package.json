@@ -1,0 +1,22 @@
+{
+  "name": "pisco",
+  "version": "1.0.0",
+  "description": "PISCO è un sistema Cloud-based ideato per compagnie di trasporto pubblico, concentrandosi principalmente sui servizi di trasporto via pullman, realizzato come progetto Universitario per il corso di Cloud Computing del dipartimento di Informatica presso l'Università degli Studi di Salerno.\r ## Obiettivo\r L'obiettivo è offrire un sistema di monitoraggio in tempo reale dell'afflusso dei passeggeri su tali mezzi attraverso l'utilizzo di sensori IoT installati internamente, fornendo informazioni e insight preziosi per ottimizzare le corse e migliorare l'efficienza operativa complessiva.\r ## Architettura di PISCO\r ![Pisco](https://github.com/AngeloSantangelo/PISCO/assets/115495018/cec05d8d-54c5-484a-ac46-7ca1f03a4321)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "prisma": "^5.7.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.7.0",
+    "express": "^4.18.2"
+  }
+}
