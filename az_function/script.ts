@@ -33,7 +33,7 @@ app.use(express.json());
   })
 
   app.get('/', async (req:any, res:any) => {
-    res.sendFile(path.join(__dirname, 'prova.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // async function main() {
