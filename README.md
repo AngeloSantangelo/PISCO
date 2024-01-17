@@ -1,4 +1,4 @@
-![Logo PISCO](https://github.com/AngeloSantangelo/PISCO/assets/115495018/e7e96419-f808-49ae-afc9-19542b2db25d)
+![Logo PISCO](https://github.com/AngeloSantangelo/PISCO/assets/115495018/e7e96419-f808-49ae-afc9-19542b2db25d | width=100)
 
 # PISCO (Pullman IoT Software with Cloud Optimization)
 PISCO è un sistema Cloud-based ideato per compagnie di trasporto pubblico, concentrandosi principalmente sui servizi di trasporto via pullman, realizzato come progetto Universitario per il corso di Cloud Computing del dipartimento di Informatica presso l'Università degli Studi di Salerno.
