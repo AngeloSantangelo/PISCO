@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizzazione Pullman</title>
+    <!-- Collegamento a Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="../img/LogoPISCO.png" alt="LogoPisco" height="60" width="100" class="d-inline-block align-top">
+            </a>
+    
+            <!-- Bottoni -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="btn btn-primary" href="createPullman.html"> Registra Pullman </a>
+                    </li>
+                    <li class="nav-item" style="margin-left: 10px;">
+                        <a class="btn btn-primary" href="createSensor.html">Registra Sensore</a>
+                    </li>
+                    <li class="nav-item" style="margin-left: 10px;">
+                        <a class="btn btn-primary" href="">Dati Raccolti</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+
+
+
+
+
+
+
+<div class="container mt-5">
+    <h2>Visualizzazione Pullman e Sensori</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">ID Pullman</th>
+                <th scope="col">Matricola</th>
+                <th scope="col">Numero Piani</th>
+                <th scope="col">Numero Posti</th>
+                <th scope="col">Sensore 1</th>
+                <th scope="col">Sensore 2</th>
+            </tr>
+        </thead>
+        <tbody id="pullmanTableBody">
+            <!-- Questa parte verrà popolata dinamicamente con JavaScript -->
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- Collegamento a Bootstrap JS (assicurati di aggiungere anche la libreria jQuery se necessario) -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+    function reload()
+    {
+        location.reload();
+    }
+
+    // Chiama la funzione per caricare i dati al caricamento della pagina
+    window.onload = loadPullmanData;
+
+
+
+
+    //Funziona per eliminare un pullman
+    async function deletePullman(idPullman) {
+        // Invia i dati al backend
+        fetch('http://localhost:7071/api/deletePullman', {
+            method: 'POST',
+            body: JSON.stringify({ idPullman }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Mostra un modal di Bootstrap con il messaggio
+            const myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+                keyboard: false
+        });
+            myModal.show();
+        })
+        .catch(error => {
+            console.error('Errore durante l\'invio dei dati:', error);
+        });
+    }
+
+
+    async function loadPullmanData() {
+    const response = await fetch('http://localhost:7071/api/findAllPullman');
+    const data = await response.json();
+
+    const tableBody = document.getElementById('pullmanTableBody');
+
+    // Itera attraverso i dati dei pullman
+    for (const pullman of data.pullman) {
+        // Creazione di una nuova riga della tabella
+        const row = document.createElement('tr');
+
+        // Aggiungi colonne con i dati del pullman
+        row.innerHTML = `
+            <td><button class="btn btn-danger" onclick="deletePullman(${pullman.idPullman})">Elimina</button></td>
+            <th scope="row">${pullman.idPullman}</th>
+            <td>${pullman.matricola}</td>
+            <td>${pullman.numPiani}</td>
+            <td>${pullman.numPosti}</td>
+            <td id="sensor1"></td>
+            <td id="sensor2"></td>
+        `;
+
+        // Aggiungi la riga alla tabella
+        tableBody.appendChild(row);
+
+        // Invoca la funzione displaySensors sincronamente per ottenere e visualizzare i dati dei sensori
+        await displaySensors(pullman.idPullman, row);
+    }
+}
+
+    // Funzione per ottenere e visualizzare i dati dei sensori per un pullman
+    async function displaySensors(idPullman, row) {
+        const response = await fetch('http://localhost:7071/api/findSensorByIdPullman', {
+            method: 'POST',
+            body: JSON.stringify({ idPullman }),
+        });
+
+        const data = await response.json();
+
+        // Ottieni gli elementi della riga relativi al sensore
+        const sensor1Element = row.querySelector('#sensor1');
+        const sensor2Element = row.querySelector('#sensor2');
+
+        // Rimuovi eventuali contenuti precedenti
+        sensor1Element.innerHTML = '';
+        sensor2Element.innerHTML = '';
+
+        if (data.sensors.length > 0) {
+            const buttonSensor1 = document.createElement('button');
+            buttonSensor1.className = 'btn btn-danger';
+            buttonSensor1.innerText = 'Elimina';
+            buttonSensor1.onclick = () => deleteSensor(data.sensors[0].idSensor);
+
+            sensor1Element.appendChild(document.createTextNode(`Matricola: ${data.sensors[0].matricola} `));
+            sensor1Element.appendChild(buttonSensor1);
+        } else {
+            sensor1Element.textContent = ' ';
+        }
+
+        if (data.sensors.length > 1) {
+            const buttonSensor2 = document.createElement('button');
+            buttonSensor2.className = 'btn btn-danger';
+            buttonSensor2.innerText = 'Elimina';
+            buttonSensor2.onclick = () => deleteSensor(data.sensors[1].idSensor);
+
+            sensor2Element.appendChild(document.createTextNode(`Matricola: ${data.sensors[1].matricola} `));
+            sensor2Element.appendChild(buttonSensor2);
+        } else {
+            sensor2Element.textContent = ' ';
+        }
+
+    };
+
+// Funzione per eliminare un sensore
+async function deleteSensor(idSensor) {
+        // Invia i dati al backend
+        fetch('http://localhost:7071/api/deleteSensor', {
+            method: 'POST',
+            body: JSON.stringify({ idSensor }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Mostra un modal di Bootstrap con il messaggio
+            const myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+                keyboard: false
+        });
+            myModal.show();
+        })
+        .catch(error => {
+            console.error('Errore durante l\'invio dei dati:', error);
+        });
+}
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal di Bootstrap per il successo -->
+<div class="modal" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Eliminazione Effettuata</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Eliminazione effettuata con successo!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="reload()">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inserimento Sensore</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container py-5">
+    <h1 class="mb-4">Creazione Sensore</h1>
+
+    <form id="sensorForm">
+        <div class="mb-3">
+            <label for="matricola" class="form-label">Matricola</label>
+            <input type="text" class="form-control" id="matricola" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="pullman" class="form-label">Seleziona Pullman</label>
+            <select class="form-select" id="pullman" required>
+                <!-- Opzioni del menu a tendina verranno popolate tramite la function findPullman -->
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Registra Sensore</button>
+    </form>
+
+    <!-- Includi i link alle librerie Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // Fetch per ottenere la lista di pullman al caricamento della pagina
+    fetch('http://localhost:7071/api/findAllPullman')
+        .then(response => response.json())
+        .then(data => {
+            const pullmanDropdown = document.getElementById("pullman");
+            
+            // Assicurati che data.pullman sia un array
+            const pullmanArray = Array.isArray(data.pullman) ? data.pullman : [data.pullman];
+
+            // Creazione option vuota
+            const emptyOption = document.createElement("option");
+                emptyOption.value = "";  // Puoi impostare il valore come desideri
+                emptyOption.textContent = "Seleziona un pullman";
+                pullmanDropdown.appendChild(emptyOption);
+
+            // Popola il menu a tendina con le opzioni di pullman
+            pullmanArray.forEach(pullman => {
+                const option = document.createElement("option");
+                option.value = pullman.idPullman.toString(); // Usa l'ID del pullman come valore
+                option.textContent = pullman.matricola;
+                pullmanDropdown.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Errore durante la ricerca dei pullman:', error);
+        });
+});
+
+document.getElementById("sensorForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const matricola = document.getElementById("matricola").value;
+    const idPullman = parseInt(document.getElementById("pullman").value);
+
+    fetch('http://localhost:7071/api/createSensor', {
+        method: 'POST',
+        body: JSON.stringify({ matricola, idPullman }),
+    })
+        .then(response => response.json())
+        .then(data => {
+                // Mostra un modal di Bootstrap con il messaggio
+                const myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+                    keyboard: false
+            });
+                myModal.show();
+            })
+        .catch(error => {
+            console.error('Errore durante l\'invio dei dati:', error);
+        });
+});
+
+
+        function change()
+        {
+            // Ottieni l'URL corrente
+            const currentURL = window.location.href;
+            // Esempio: cambia l'ultima parte dell'URL
+            const newURL = currentURL.replace(/\/[^\/]+$/, '/index.html');
+            // Effettua il redirect alla nuova URL
+            window.location.href = newURL;
+
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+<!-- Modal di Bootstrap per il successo -->
+<div class="modal" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Inserimento Effettuato</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Il sensore è stato creato con successo.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="change()">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
