@@ -122,6 +122,17 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
     //Funziona per eliminare un pullman
     async function deletePullman(idPullman) {
         // Invia i dati al backend
@@ -143,35 +154,70 @@
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     async function loadPullmanData() {
-    const response = await fetch('http://localhost:7071/api/findAllPullman');
-    const data = await response.json();
+        const response = await fetch('http://localhost:7071/api/findAllPullman');
+        const data = await response.json();
 
-    const tableBody = document.getElementById('pullmanTableBody');
+        const tableBody = document.getElementById('pullmanTableBody');
 
-    // Itera attraverso i dati dei pullman
-    for (const pullman of data.pullman) {
-        // Creazione di una nuova riga della tabella
-        const row = document.createElement('tr');
+        // Itera attraverso i dati dei pullman
+        for (const pullman of data.pullman) {
+            // Creazione di una nuova riga della tabella
+            const row = document.createElement('tr');
 
-        // Aggiungi colonne con i dati del pullman
-        row.innerHTML = `
-            <td> <i class="fas fa-trash-alt btn-delete" onclick="deletePullman(${pullman.idPullman})" title="Elimina"></i></td>
-            <th scope="row">${pullman.idPullman}</th>
-            <td>${pullman.matricola}</td>
-            <td>${pullman.numPiani}</td>
-            <td>${pullman.numPosti}</td>
-            <td id="sensor1"></td>
-            <td id="sensor2"></td>
-        `;
+            // Aggiungi colonne con i dati del pullman
+            row.innerHTML = `
+                <td> <i class="fas fa-trash-alt btn-delete" onclick="deletePullman(${pullman.idPullman})" title="Elimina"></i></td>
+                <th scope="row">${pullman.idPullman}</th>
+                <td>${pullman.matricola}</td>
+                <td>${pullman.numPiani}</td>
+                <td>${pullman.numPosti}</td>
+                <td id="sensor1"></td>
+                <td id="sensor2"></td>
+            `;
 
-        // Aggiungi la riga alla tabella
-        tableBody.appendChild(row);
+            // Aggiungi la riga alla tabella
+            tableBody.appendChild(row);
 
-        // Invoca la funzione displaySensors sincronamente per ottenere e visualizzare i dati dei sensori
-        await displaySensors(pullman.idPullman, row);
+            // Invoca la funzione displaySensors sincronamente per ottenere e visualizzare i dati dei sensori
+            await displaySensors(pullman.idPullman, row);
+        }
     }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Funzione per ottenere e visualizzare i dati dei sensori per un pullman
     async function displaySensors(idPullman, row) {
@@ -237,6 +283,19 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Funzione per eliminare un sensore
 async function deleteSensor(idSensor) {
         // Invia i dati al backend
@@ -256,6 +315,18 @@ async function deleteSensor(idSensor) {
             console.error('Errore durante l\'invio dei dati:', error);
         });
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Funzione per copiare la connectionString
@@ -285,6 +356,10 @@ function copyConnectionString(connectionString) {
     alert('Connection String copiata!');
 }
 </script>
+
+
+
+
 
 
 
