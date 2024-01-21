@@ -6,6 +6,26 @@
     <title>Visualizzazione Pullman</title>
     <!-- Collegamento a Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .btn-danger {
+            background-color: #003b6e; /* Sostituisci con il colore desiderato */
+            border: none;
+            padding: 0;
+            margin-left: 20px;
+        }
+
+        .btn-danger img {
+            width: 20px; /* Imposta la larghezza desiderata per l'icona */
+            height: 20px; /* Imposta l'altezza desiderata per l'icona */
+        }
+
+        .btn-delete {
+            color: red;
+            cursor: pointer;
+        }
+
+    </style>
 </head>
 <body>
 
@@ -20,13 +40,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="btn btn-primary" href="createPullman.html"> Registra Pullman </a>
+                        <a class="btn btn-primary" style="background-color: #003b6e;" href="createPullman.html"> Registra Pullman </a>
                     </li>
                     <li class="nav-item" style="margin-left: 10px;">
-                        <a class="btn btn-primary" href="createSensor.html">Registra Sensore</a>
+                        <a class="btn btn-primary" style="background-color: #003b6e;" href="createSensor.html">Registra Sensore</a>
                     </li>
                     <li class="nav-item" style="margin-left: 10px;">
-                        <a class="btn btn-primary" href="">Dati Raccolti</a>
+                        <a class="btn btn-primary" style="background-color: #003b6e;" href="">Dati Raccolti</a>
                     </li>
                 </ul>
             </div>
@@ -45,8 +65,8 @@
 
 <div class="container mt-5">
     <h2>Visualizzazione Pullman e Sensori</h2>
-    <table class="table">
-        <thead>
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
             <tr>
                 <th scope="col"></th>
                 <th scope="col">ID Pullman</th>
@@ -136,7 +156,7 @@
 
         // Aggiungi colonne con i dati del pullman
         row.innerHTML = `
-            <td><button class="btn btn-danger" onclick="deletePullman(${pullman.idPullman})">Elimina</button></td>
+            <td> <i class="fas fa-trash-alt btn-delete" onclick="deletePullman(${pullman.idPullman})" title="Elimina"></i></td>
             <th scope="row">${pullman.idPullman}</th>
             <td>${pullman.matricola}</td>
             <td>${pullman.numPiani}</td>
@@ -155,46 +175,67 @@
 
     // Funzione per ottenere e visualizzare i dati dei sensori per un pullman
     async function displaySensors(idPullman, row) {
-        const response = await fetch('http://localhost:7071/api/findSensorByIdPullman', {
-            method: 'POST',
-            body: JSON.stringify({ idPullman }),
-        });
+    const response = await fetch('http://localhost:7071/api/findSensorByIdPullman', {
+        method: 'POST',
+        body: JSON.stringify({ idPullman }),
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        // Ottieni gli elementi della riga relativi al sensore
-        const sensor1Element = row.querySelector('#sensor1');
-        const sensor2Element = row.querySelector('#sensor2');
+    // Ottieni gli elementi della riga relativi al sensore
+    const sensor1Element = row.querySelector('#sensor1');
+    const sensor2Element = row.querySelector('#sensor2');
 
-        // Rimuovi eventuali contenuti precedenti
-        sensor1Element.innerHTML = '';
-        sensor2Element.innerHTML = '';
+    // Rimuovi eventuali contenuti precedenti
+    sensor1Element.innerHTML = '';
+    sensor2Element.innerHTML = '';
 
-        if (data.sensors.length > 0) {
-            const buttonSensor1 = document.createElement('button');
-            buttonSensor1.className = 'btn btn-danger';
-            buttonSensor1.innerText = 'Elimina';
-            buttonSensor1.onclick = () => deleteSensor(data.sensors[0].idSensor);
+    if (data.sensors.length > 0) {
+        const buttonSensor1 = document.createElement('button');
+        buttonSensor1.className = 'btn btn-danger rounded-0';
+        buttonSensor1.style.width = '20px'; // Imposta la larghezza
+        buttonSensor1.style.height = '25px'; // Imposta l'altezza
+        buttonSensor1.innerHTML = '<i class="fas fa-trash-alt"></i>';  // Sostituisci con l'icona del cestino
+        buttonSensor1.onclick = () => deleteSensor(data.sensors[0].idSensor);
 
-            sensor1Element.appendChild(document.createTextNode(`Matricola: ${data.sensors[0].matricola} `));
-            sensor1Element.appendChild(buttonSensor1);
-        } else {
-            sensor1Element.textContent = ' ';
-        }
+        const buttonCopy1 = document.createElement('button');
+        buttonCopy1.className = 'btn btn-info btn-danger rounded-0';
+        buttonCopy1.style.width = '20px'; // Imposta la larghezza
+        buttonCopy1.style.height = '25px'; // Imposta l'altezza
+        buttonCopy1.innerHTML = '<i class="fas fa-copy"></i>';
+        buttonCopy1.onclick = () => copyConnectionString(data.sensors[0].connectionString);
 
-        if (data.sensors.length > 1) {
-            const buttonSensor2 = document.createElement('button');
-            buttonSensor2.className = 'btn btn-danger';
-            buttonSensor2.innerText = 'Elimina';
-            buttonSensor2.onclick = () => deleteSensor(data.sensors[1].idSensor);
+        sensor1Element.appendChild(document.createTextNode(`Matricola: ${data.sensors[0].matricola} `));
+        sensor1Element.appendChild(buttonSensor1);
+        sensor1Element.appendChild(buttonCopy1);
+    } else {
+        sensor1Element.textContent = ' ';
+    }
 
-            sensor2Element.appendChild(document.createTextNode(`Matricola: ${data.sensors[1].matricola} `));
-            sensor2Element.appendChild(buttonSensor2);
-        } else {
-            sensor2Element.textContent = ' ';
-        }
+    if (data.sensors.length > 1) {
+        const buttonSensor2 = document.createElement('button');
+        buttonSensor2.className = 'btn btn-danger rounded-0';
+        buttonSensor2.style.width = '20px'; // Imposta la larghezza
+        buttonSensor2.style.height = '25px'; // Imposta l'altezza
+        buttonSensor2.innerHTML = '<i class="fas fa-trash-alt"></i>';  // Sostituisci con l'icona del cestino
+        buttonSensor2.onclick = () => deleteSensor(data.sensors[1].idSensor);
 
-    };
+        const buttonCopy2 = document.createElement('button');
+        buttonCopy2.className = 'btn btn-info btn-danger rounded-0';
+        buttonCopy2.style.width = '20px'; // Imposta la larghezza
+        buttonCopy2.style.height = '25px'; // Imposta l'altezza
+        buttonCopy2.innerHTML = '<i class="fas fa-copy"></i>';
+        buttonCopy2.onclick = () => copyConnectionString(data.sensors[1].connectionString);
+
+        sensor2Element.appendChild(document.createTextNode(`Matricola: ${data.sensors[1].matricola} `));
+        sensor2Element.appendChild(buttonSensor2);
+        sensor2Element.appendChild(buttonCopy2);
+    } else {
+        sensor2Element.textContent = ' ';
+    }
+}
+
+
 
 // Funzione per eliminare un sensore
 async function deleteSensor(idSensor) {
@@ -216,6 +257,34 @@ async function deleteSensor(idSensor) {
         });
 }
 
+
+// Funzione per copiare la connectionString
+function copyConnectionString(connectionString) {
+    // Crea un elemento di input nascosto
+    const textArea = document.createElement('textarea');
+    
+    textArea.value = connectionString; // Sostituisci con la tua connection string
+
+    // Aggiungi l'elemento al DOM
+    document.body.appendChild(textArea);
+
+    // Seleziona il testo nell'elemento textarea
+    textArea.select();
+
+    try {
+        // Copia il testo negli appunti
+        document.execCommand('copy');
+        console.log(connectionString);
+    } catch (err) {
+        console.error('Errore durante la copia negli appunti:', err);
+    }
+
+    // Rimuovi l'elemento textarea (opzionale, puoi anche mantenerlo nascosto)
+    document.body.removeChild(textArea);
+
+    // Aggiungi qui la logica per informare l'utente che la copia è stata effettuata
+    alert('Connection String copiata!');
+}
 </script>
 
 
