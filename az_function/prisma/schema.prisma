@@ -17,8 +17,10 @@ model Sensor {
   idSensor Int              @id @default(autoincrement())
   matricola String          @unique
   connectionString String
+  collectedData CollectedData[]
   pullman Pullman           @relation(fields: [idPullman], references: [idPullman], onDelete: Cascade)
   idPullman Int
+  
 }
 
 model Pullman {
@@ -30,6 +32,9 @@ model Pullman {
 }
 
 model CollectedData{
-  id               Int       @id @default(autoincrement())
-  peopleNumber     Int
+  idData Int                @id @default(autoincrement())
+  peopleNumber Int
+  date DateTime
+  idSensor Int
+  sensor Sensor             @relation(fields: [idSensor], references: [idSensor], onDelete: Cascade)
 }
