@@ -49,9 +49,6 @@
                     <li class="nav-item" style="margin-left: 10px;">
                         <a class="btn btn-primary" style="background-color: #003b6e;" href="createSensor.html">Registra Sensore</a>
                     </li>
-                    <li class="nav-item" style="margin-left: 10px;">
-                        <a class="btn btn-primary" style="background-color: #003b6e;" href="">Dati Raccolti</a>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -79,6 +76,7 @@
                 <th scope="col">Numero Posti</th>
                 <th scope="col">Sensore 1</th>
                 <th scope="col">Sensore 2</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody id="pullmanTableBody">
@@ -192,6 +190,7 @@
                 <td>${pullman.numPosti}</td>
                 <td id="sensor1"></td>
                 <td id="sensor2"></td>
+                <td id="collectedData"></td>
             `;
 
             // Aggiungi la riga alla tabella
@@ -235,6 +234,7 @@
     // Ottieni gli elementi della riga relativi al sensore
     const sensor1Element = row.querySelector('#sensor1');
     const sensor2Element = row.querySelector('#sensor2');
+    const collectedData = row.querySelector('#collectedData');
 
     // Rimuovi eventuali contenuti precedenti
     sensor1Element.innerHTML = '';
@@ -283,7 +283,50 @@
     } else {
         sensor2Element.textContent = ' ';
     }
+
+    //creazione del link "vedi dettagli"
+    const linkElement = document.createElement('a');
+    linkElement.textContent = 'Vedi dettagli';
+    linkElement.href = '#';
+    linkElement.addEventListener('click', function() {
+        handleLinkClick(data.sensors);
+    });
+    collectedData.appendChild(linkElement);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Funzione per gestire il clic del link
+function handleLinkClick(sensors) {
+    // Recupera i dati che desideri passare alla nuova pagina
+    if (sensors.length > 0) {
+        const sensor1 = JSON.stringify(sensors[0]);
+        localStorage.setItem("sensor1", sensor1);
+    }
+
+    if (sensors.length > 1) {
+        const sensor2 = JSON.stringify(sensors[1]);
+        localStorage.setItem("sensor2", sensor2);
+    }
+
+    const url = 'collectedData.html';
+    // Esegui il reindirizzamento alla nuova pagina
+    window.location.href = url;
+}
+
+
 
 
 

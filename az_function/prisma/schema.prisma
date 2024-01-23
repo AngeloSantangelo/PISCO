@@ -34,7 +34,7 @@ model Pullman {
 model CollectedData{
   idData Int                @id @default(autoincrement())
   peopleNumber Int
-  date DateTime
+  date DateTime             @default(now())
   idSensor Int
   sensor Sensor             @relation(fields: [idSensor], references: [idSensor], onDelete: Cascade)
 }
