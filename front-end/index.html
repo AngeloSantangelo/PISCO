@@ -9,15 +9,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .btn-danger {
-            background-color: #003b6e; /* Sostituisci con il colore desiderato */
+            background-color: #003b6e;
             border: none;
             padding: 0;
             margin-left: 20px;
         }
 
         .btn-danger img {
-            width: 20px; /* Imposta la larghezza desiderata per l'icona */
-            height: 20px; /* Imposta l'altezza desiderata per l'icona */
+            width: 20px; 
+            height: 20px; 
         }
 
         .btn-delete {
@@ -26,12 +26,7 @@
         }
 
         .navbar {
-            background-color: #b2d1e6; /* Cambia questo colore con il colore desiderato */
-        }
-
-        .elenco{
-            text-align: center;
-            color: #003b6e !important;
+            background-color: #b2d1e6;
         }
 
     </style>
@@ -74,17 +69,17 @@
 
 
 <div class="container mt-5">
-    <h2 class="elenco">Elenco Pullman e Sensori</h2>
+    <h2>Elenco Pullman e Sensori</h2>
     <table class="table table-bordered table-hover elenco">
         <thead class="table-light">
             <tr>
                 <th scope="col"></th>
-                <th scope="col" class="elenco">ID Pullman</th>
-                <th scope="col" class="elenco">Matricola</th>
-                <th scope="col" class="elenco">Numero Piani</th>
-                <th scope="col" class="elenco">Numero Posti</th>
-                <th scope="col" class="elenco">Sensore 1</th>
-                <th scope="col" class="elenco">Sensore 2</th>
+                <th scope="col">ID Pullman</th>
+                <th scope="col">Matricola</th>
+                <th scope="col">Numero Piani</th>
+                <th scope="col">Numero Posti</th>
+                <th scope="col">Sensore 1</th>
+                <th scope="col">Sensore 2</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -110,7 +105,7 @@
 
 
 
-<!-- Collegamento a Bootstrap JS (assicurati di aggiungere anche la libreria jQuery se necessario) -->
+<!-- Collegamento a Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
@@ -139,7 +134,7 @@
         location.reload();
     }
 
-    // Chiama la funzione per caricare i dati al caricamento della pagina
+    // al caricamento della pagina, verranno caricati i dati
     window.onload = loadPullmanData;
 
 
@@ -163,14 +158,13 @@
 
     //Funziona per eliminare un pullman
     async function deletePullman(idPullman) {
-        // Invia i dati al backend
         fetch('http://localhost:7071/api/deletePullman', {
             method: 'POST',
             body: JSON.stringify({ idPullman }),
         })
         .then(response => response.json())
         .then(data => {
-            // Mostra un modal di Bootstrap con il messaggio
+            
             const myModal = new bootstrap.Modal(document.getElementById('successModal'), {
                 keyboard: false
         });
@@ -204,12 +198,12 @@
 
         const tableBody = document.getElementById('pullmanTableBody');
 
-        // Itera attraverso i dati dei pullman
+        
         for (const pullman of data.pullman) {
             // Creazione di una nuova riga della tabella
             const row = document.createElement('tr');
 
-            // Aggiungi colonne con i dati del pullman
+            // Aggiunta colonne con i dati del pullman
             row.innerHTML = `
                 <td> <i class="fas fa-trash-alt btn-delete" onclick="deletePullman(${pullman.idPullman})" title="Elimina"></i></td>
                 <th scope="row">${pullman.idPullman}</th>
@@ -221,10 +215,10 @@
                 <td id="collectedData"></td>
             `;
 
-            // Aggiungi la riga alla tabella
+            // Aggiunta riga alla tabella
             tableBody.appendChild(row);
 
-            // Invoca la funzione displaySensors sincronamente per ottenere e visualizzare i dati dei sensori
+            // Invocazione della funzione displaySensors per ottenere e visualizzare i dati dei sensori
             await displaySensors(pullman.idPullman, row);
         }
     }
@@ -252,77 +246,76 @@
 
     // Funzione per ottenere e visualizzare i dati dei sensori per un pullman
     async function displaySensors(idPullman, row) {
-    const response = await fetch('http://localhost:7071/api/findSensorByIdPullman', {
-        method: 'POST',
-        body: JSON.stringify({ idPullman }),
-    });
+        const response = await fetch('http://localhost:7071/api/findSensorByIdPullman', {
+            method: 'POST',
+            body: JSON.stringify({ idPullman }),
+        });
 
-    const data = await response.json();
+        const data = await response.json();
 
-    // Ottieni gli elementi della riga relativi al sensore
-    const sensor1Element = row.querySelector('#sensor1');
-    const sensor2Element = row.querySelector('#sensor2');
-    const collectedData = row.querySelector('#collectedData');
+        const sensor1Element = row.querySelector('#sensor1');
+        const sensor2Element = row.querySelector('#sensor2');
+        const collectedData = row.querySelector('#collectedData');
 
-    // Rimuovi eventuali contenuti precedenti
-    sensor1Element.innerHTML = '';
-    sensor2Element.innerHTML = '';
+        sensor1Element.innerHTML = '';
+        sensor2Element.innerHTML = '';
 
-    if (data.sensors.length > 0) {
-        const buttonSensor1 = document.createElement('button');
-        buttonSensor1.className = 'btn btn-danger rounded-0';
-        buttonSensor1.style.width = '20px'; // Imposta la larghezza
-        buttonSensor1.style.height = '25px'; // Imposta l'altezza
-        buttonSensor1.innerHTML = '<i class="fas fa-trash-alt"></i>';  // Sostituisci con l'icona del cestino
-        buttonSensor1.onclick = () => deleteSensor(data.sensors[0].idSensor);
+        if (data.sensors.length > 0) {
+            const buttonSensor1 = document.createElement('button');
+            buttonSensor1.className = 'btn btn-danger rounded-0';
+            buttonSensor1.style.width = '20px'; 
+            buttonSensor1.style.height = '25px'; 
+            buttonSensor1.innerHTML = '<i class="fas fa-trash-alt"></i>';  
+            buttonSensor1.onclick = () => deleteSensor(data.sensors[0].idSensor);
 
-        const buttonCopy1 = document.createElement('button');
-        buttonCopy1.className = 'btn btn-info btn-danger rounded-0';
-        buttonCopy1.style.width = '20px'; // Imposta la larghezza
-        buttonCopy1.style.height = '25px'; // Imposta l'altezza
-        buttonCopy1.innerHTML = '<i class="fas fa-copy"></i>';
-        buttonCopy1.onclick = () => copyConnectionString(data.sensors[0].connectionString);
+            const buttonCopy1 = document.createElement('button');
+            buttonCopy1.className = 'btn btn-info btn-danger rounded-0';
+            buttonCopy1.style.width = '20px'; 
+            buttonCopy1.style.height = '25px'; 
+            buttonCopy1.innerHTML = '<i class="fas fa-copy"></i>';
+            buttonCopy1.onclick = () => copyConnectionString(data.sensors[0].connectionString);
 
-        sensor1Element.appendChild(document.createTextNode(`Matricola: ${data.sensors[0].matricola} `));
-        sensor1Element.appendChild(buttonSensor1);
-        sensor1Element.appendChild(buttonCopy1);
-    } else {
-        sensor1Element.textContent = ' ';
+            sensor1Element.appendChild(document.createTextNode(`Matricola: ${data.sensors[0].matricola} `));
+            sensor1Element.appendChild(buttonSensor1);
+            sensor1Element.appendChild(buttonCopy1);
+        } else {
+            sensor1Element.textContent = ' ';
+        }
+
+        if (data.sensors.length > 1) {
+            const buttonSensor2 = document.createElement('button');
+            buttonSensor2.className = 'btn btn-danger rounded-0';
+            buttonSensor2.style.width = '20px'; 
+            buttonSensor2.style.height = '25px'; 
+            buttonSensor2.innerHTML = '<i class="fas fa-trash-alt"></i>'; 
+            buttonSensor2.onclick = () => deleteSensor(data.sensors[1].idSensor);
+
+            const buttonCopy2 = document.createElement('button');
+            buttonCopy2.className = 'btn btn-info btn-danger rounded-0';
+            buttonCopy2.style.width = '20px'; 
+            buttonCopy2.style.height = '25px'; 
+            buttonCopy2.innerHTML = '<i class="fas fa-copy"></i>';
+            buttonCopy2.onclick = () => copyConnectionString(data.sensors[1].connectionString);
+
+            sensor2Element.appendChild(document.createTextNode(`Matricola: ${data.sensors[1].matricola} `));
+            sensor2Element.appendChild(buttonSensor2);
+            sensor2Element.appendChild(buttonCopy2);
+        } else {
+            sensor2Element.textContent = ' ';
+        }
+
+
+        // Creazione del link "vedi dettagli"
+        const linkElement = document.createElement('a');
+        linkElement.textContent = 'Vedi dettagli';
+        linkElement.href = '#';
+        linkElement.style.color = '#003b6e';
+        linkElement.addEventListener('click', function() {
+            handleLinkClick(data.sensors);
+        });
+        collectedData.appendChild(linkElement);
     }
 
-    if (data.sensors.length > 1) {
-        const buttonSensor2 = document.createElement('button');
-        buttonSensor2.className = 'btn btn-danger rounded-0';
-        buttonSensor2.style.width = '20px'; // Imposta la larghezza
-        buttonSensor2.style.height = '25px'; // Imposta l'altezza
-        buttonSensor2.innerHTML = '<i class="fas fa-trash-alt"></i>';  // Sostituisci con l'icona del cestino
-        buttonSensor2.onclick = () => deleteSensor(data.sensors[1].idSensor);
-
-        const buttonCopy2 = document.createElement('button');
-        buttonCopy2.className = 'btn btn-info btn-danger rounded-0';
-        buttonCopy2.style.width = '20px'; // Imposta la larghezza
-        buttonCopy2.style.height = '25px'; // Imposta l'altezza
-        buttonCopy2.innerHTML = '<i class="fas fa-copy"></i>';
-        buttonCopy2.onclick = () => copyConnectionString(data.sensors[1].connectionString);
-
-        sensor2Element.appendChild(document.createTextNode(`Matricola: ${data.sensors[1].matricola} `));
-        sensor2Element.appendChild(buttonSensor2);
-        sensor2Element.appendChild(buttonCopy2);
-    } else {
-        sensor2Element.textContent = ' ';
-    }
-
-
-    //creazione del link "vedi dettagli"
-    const linkElement = document.createElement('a');
-    linkElement.textContent = 'Vedi dettagli';
-    linkElement.href = '#';
-    linkElement.style.color = '#003b6e';
-    linkElement.addEventListener('click', function() {
-        handleLinkClick(data.sensors);
-    });
-    collectedData.appendChild(linkElement);
-}
 
 
 
@@ -337,10 +330,8 @@
 
 
 
-
-// Funzione per gestire il clic del link
+// Funzione per gestire il click del link
 function handleLinkClick(sensors) {
-    // Recupera i dati che desideri passare alla nuova pagina
     if (sensors.length > 0) {
         const sensor1 = JSON.stringify(sensors[0]);
         localStorage.setItem("sensor1", sensor1);
@@ -352,7 +343,7 @@ function handleLinkClick(sensors) {
     }
 
     const url = 'collectedData.html';
-    // Esegui il reindirizzamento alla nuova pagina
+    // Reindirizzamento alla nuova pagina
     window.location.href = url;
 }
 
@@ -375,22 +366,20 @@ function handleLinkClick(sensors) {
 
 // Funzione per eliminare un sensore
 async function deleteSensor(idSensor) {
-        // Invia i dati al backend
-        fetch('http://localhost:7071/api/deleteSensor', {
-            method: 'POST',
-            body: JSON.stringify({ idSensor }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Mostra un modal di Bootstrap con il messaggio
-            const myModal = new bootstrap.Modal(document.getElementById('successModal'), {
-                keyboard: false
-        });
-            myModal.show();
-        })
-        .catch(error => {
-            console.error('Errore durante l\'invio dei dati:', error);
-        });
+    fetch('http://localhost:7071/api/deleteSensor', {
+        method: 'POST',
+        body: JSON.stringify({ idSensor }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        const myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+            keyboard: false
+    });
+        myModal.show();
+    })
+    .catch(error => {
+        console.error('Errore durante l\'invio dei dati:', error);
+    });
 }
 
 
@@ -409,13 +398,10 @@ async function deleteSensor(idSensor) {
 // Funzione per copiare la connectionString
 function copyConnectionString(connectionString) {
     const textArea = document.createElement('textarea');
+    textArea.value = connectionString;
     
-    textArea.value = connectionString; // Sostituisci con la tua connection string
-
-    // Aggiungi l'elemento al DOM
     document.body.appendChild(textArea);
 
-    // Seleziona il testo nell'elemento textarea
     textArea.select();
 
     try {
@@ -426,10 +412,8 @@ function copyConnectionString(connectionString) {
         console.error('Errore durante la copia negli appunti:', err);
     }
 
-    // Rimuovi l'elemento textarea (opzionale, puoi anche mantenerlo nascosto)
     document.body.removeChild(textArea);
 
-    // Aggiungi qui la logica per informare l'utente che la copia è stata effettuata
     alert('Connection String copiata!');
 }
 </script>
