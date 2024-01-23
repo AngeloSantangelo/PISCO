@@ -61,6 +61,10 @@
 
 
 
+    
+
+
+
 
 
 
@@ -95,10 +99,22 @@
 
 
 
+
+
+
+
+
+
 <!-- Collegamento a Bootstrap JS (assicurati di aggiungere anche la libreria jQuery se necessario) -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+
+
+
+
+
 
 
 
@@ -135,6 +151,11 @@
 
 
 
+
+
+
+
+
     //Funziona per eliminare un pullman
     async function deletePullman(idPullman) {
         // Invia i dati al backend
@@ -154,6 +175,8 @@
             console.error('Errore durante l\'invio dei dati:', error);
         });
     }
+
+
 
 
 
@@ -284,10 +307,12 @@
         sensor2Element.textContent = ' ';
     }
 
+
     //creazione del link "vedi dettagli"
     const linkElement = document.createElement('a');
     linkElement.textContent = 'Vedi dettagli';
     linkElement.href = '#';
+    linkElement.style.color = '#003b6e';
     linkElement.addEventListener('click', function() {
         handleLinkClick(data.sensors);
     });
