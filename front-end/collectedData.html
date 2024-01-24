@@ -24,6 +24,57 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+const sensor1String = localStorage.getItem("sensor1");
+const sensor2String = localStorage.getItem("sensor2");
+
+const sensor1 = JSON.parse(sensor1String);
+const sensor2 = JSON.parse(sensor2String);
+
+if(sensor1){
+  fetchData(sensor1.idSensor)
+}
+
+if(sensor2){
+  fetchData(sensor2.idSensor)
+}
+
+
+
+
+
+async function fetchData(idSensor) {  
+  try {
+    const response = await fetch('http://localhost:7071/api/findDataByIdSensor', {
+        method: 'POST',
+        body: JSON.stringify({ idSensor }),
+    });
+
+    const data = await response.json();
+
+    data.collectedData.forEach(collectedData => {
+      const date = new Date(collectedData.date);
+      const dayOfWeek = getDayOfWeek(date.getDay());
+
+      console.log('People Number: ' + collectedData.peopleNumber)
+      console.log('Date: ' + collectedData.date)
+      console.log('Day of Week: ' + dayOfWeek)
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+  function getDayOfWeek(dayIndex) {
+      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return daysOfWeek[dayIndex];
+  }
+
+
+
+
+
+
+/*
   // Esempio di dati
   const data = {
     labels: ["Settimana 1", "Settimana 2", "Settimana 3", "Settimana 4"],
@@ -58,7 +109,7 @@
     data: data,
     options: options,
   });
-
+*/
 </script>
 
 </body>
