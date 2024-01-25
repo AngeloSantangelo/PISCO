@@ -78,8 +78,7 @@
                 <th scope="col">Matricola</th>
                 <th scope="col">Numero Piani</th>
                 <th scope="col">Numero Posti</th>
-                <th scope="col">Sensore 1</th>
-                <th scope="col">Sensore 2</th>
+                <th scope="col">Sensore</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -211,7 +210,6 @@
                 <td>${pullman.numPiani}</td>
                 <td>${pullman.numPosti}</td>
                 <td id="sensor1"></td>
-                <td id="sensor2"></td>
                 <td id="collectedData"></td>
             `;
 
@@ -244,21 +242,13 @@
 
 
 
-    // Funzione per ottenere e visualizzare i dati dei sensori per un pullman
+    // Funzione per ottenere e visualizzare i dati del sensore nel pullman
     async function displaySensors(pullman, row) {
-        /*const response = await fetch('http://localhost:7071/api/findSensorByIdPullman', {
-            method: 'POST',
-            body: JSON.stringify({ idPullman }),
-        });
-
-        const data = await response.json();*/
 
         const sensor1Element = row.querySelector('#sensor1');
-        const sensor2Element = row.querySelector('#sensor2');
         const collectedData = row.querySelector('#collectedData');
 
         sensor1Element.innerHTML = '';
-        sensor2Element.innerHTML = '';
 
         if (pullman.sensors.length > 0) {
             const buttonSensor1 = document.createElement('button');
@@ -281,29 +271,6 @@
         } else {
             sensor1Element.textContent = ' ';
         }
-
-        if (pullman.sensors.length > 1) {
-            const buttonSensor2 = document.createElement('button');
-            buttonSensor2.className = 'btn btn-danger rounded-0';
-            buttonSensor2.style.width = '20px'; 
-            buttonSensor2.style.height = '25px'; 
-            buttonSensor2.innerHTML = '<i class="fas fa-trash-alt"></i>'; 
-            buttonSensor2.onclick = () => deleteSensor(pullman.sensors[1].idSensor);
-
-            const buttonCopy2 = document.createElement('button');
-            buttonCopy2.className = 'btn btn-info btn-danger rounded-0';
-            buttonCopy2.style.width = '20px'; 
-            buttonCopy2.style.height = '25px'; 
-            buttonCopy2.innerHTML = '<i class="fas fa-copy"></i>';
-            buttonCopy2.onclick = () => copyConnectionString(pullman.sensors[1].connectionString);
-
-            sensor2Element.appendChild(document.createTextNode(`Matricola: ${pullman.sensors[1].matricola} `));
-            sensor2Element.appendChild(buttonSensor2);
-            sensor2Element.appendChild(buttonCopy2);
-        } else {
-            sensor2Element.textContent = ' ';
-        }
-
 
         // Creazione del link "vedi dettagli"
         const linkElement = document.createElement('a');
@@ -335,11 +302,6 @@ function handleLinkClick(sensors) {
     if (sensors.length > 0) {
         const sensor1 = JSON.stringify(sensors[0]);
         localStorage.setItem("sensor1", sensor1);
-    }
-
-    if (sensors.length > 1) {
-        const sensor2 = JSON.stringify(sensors[1]);
-        localStorage.setItem("sensor2", sensor2);
     }
 
     const url = 'collectedData.html';
