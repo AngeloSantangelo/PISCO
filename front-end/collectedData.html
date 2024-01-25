@@ -51,65 +51,92 @@ async function fetchData(idSensor) {
 
     const data = await response.json();
 
-    data.collectedData.forEach(collectedData => {
-      const date = new Date(collectedData.date);
-      const dayOfWeek = getDayOfWeek(date.getDay());
+    const nomiMesi = [
+      'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+      'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
+    ];
 
-      console.log('People Number: ' + collectedData.peopleNumber)
-      console.log('Date: ' + collectedData.date)
-      console.log('Day of Week: ' + dayOfWeek)
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const labels = [];
+
+    // Ottenere il mese attuale (quello di sistema)
+    const actualDate = new Date();
+    const actualMonthIndex = actualDate.getMonth();
+    const actualMonth = nomiMesi[actualMonthIndex];
+
+    const filteredData = data.collectedData.filter(collectedData => {
+      const date = new Date(collectedData.date);
+      return date.getMonth() === actualMonthIndex;
     });
+
+    daysOfWeek.forEach(day => {
+        labels.push(`${day}`);
+    });
+
+    const maxPeopleNumbers = {};    
+
+    filteredData.forEach(filteredData => {
+      const date = new Date(filteredData.date);
+      const dayOfWeek = getDayOfWeek(daysOfWeek, date.getDay());
+      const month = nomiMesi[date.getMonth()];
+
+      const key = `${dayOfWeek}`;
+
+      // Verifica se esiste già un massimo per questo giorno
+      if (!maxPeopleNumbers[key] || filteredData.peopleNumber > maxPeopleNumbers[key]) {
+        maxPeopleNumbers[key] = filteredData.peopleNumber;
+      }
+    });
+
+    const peopleNumbers = labels.map(label => maxPeopleNumbers[label] || 0);
+
+    updateChart(labels, peopleNumbers);
   } catch (error) {
     console.error(error);
   }
 }
 
-  function getDayOfWeek(dayIndex) {
-      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      return daysOfWeek[dayIndex];
+
+
+
+
+
+  function getDayOfWeek(daysOfWeek, dayIndex) {
+    return daysOfWeek[dayIndex];
   }
 
 
 
-
-
-
-/*
-  // Esempio di dati
-  const data = {
-    labels: ["Settimana 1", "Settimana 2", "Settimana 3", "Settimana 4"],
-    datasets: [
-      {
-        label: "Dati Settimanali",
-        data: [10, 20, 15, 25],
-        borderColor: "blue",
-        backgroundColor: "rgba(0, 123, 255, 0.2)",
-      },
-    ],
-  };
-
-  // Configurazione del grafico con Chart.js
-  const ctx = document.getElementById("myChart").getContext("2d");
-
-  const options = {
-    responsive: false,
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        beginAtZero: true,
-      },
-      y: {
-        beginAtZero: true,
-      },
+  function updateChart(labels, peopleNumbers) {
+  const ctx = document.getElementById('myChart').getContext('2d');
+  const myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'People Number',
+        data: peopleNumbers,
+        fill: false,
+        borderColor: '#003b6e',
+        borderWidth: 2
+      }]
     },
-  };
-
-  new Chart(ctx, {
-    type: "line",
-    data: data,
-    options: options,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'People Number'
+          },
+        }
+      }
+    }
   });
-*/
+}
+
+
+
 </script>
 
 </body>

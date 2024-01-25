@@ -5,7 +5,11 @@ export async function findAllPullman(request: HttpRequest, context: InvocationCo
     const prisma = new PrismaClient();
 
     try {
-        const pullman = await prisma.pullman.findMany();
+        const pullman = await prisma.pullman.findMany({
+            include: {
+                sensors: true
+            }
+        });
 
         return {
             jsonBody: {

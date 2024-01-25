@@ -219,7 +219,7 @@
             tableBody.appendChild(row);
 
             // Invocazione della funzione displaySensors per ottenere e visualizzare i dati dei sensori
-            await displaySensors(pullman.idPullman, row);
+            await displaySensors(pullman, row);
         }
     }
 
@@ -245,13 +245,13 @@
 
 
     // Funzione per ottenere e visualizzare i dati dei sensori per un pullman
-    async function displaySensors(idPullman, row) {
-        const response = await fetch('http://localhost:7071/api/findSensorByIdPullman', {
+    async function displaySensors(pullman, row) {
+        /*const response = await fetch('http://localhost:7071/api/findSensorByIdPullman', {
             method: 'POST',
             body: JSON.stringify({ idPullman }),
         });
 
-        const data = await response.json();
+        const data = await response.json();*/
 
         const sensor1Element = row.querySelector('#sensor1');
         const sensor2Element = row.querySelector('#sensor2');
@@ -260,44 +260,44 @@
         sensor1Element.innerHTML = '';
         sensor2Element.innerHTML = '';
 
-        if (data.sensors.length > 0) {
+        if (pullman.sensors.length > 0) {
             const buttonSensor1 = document.createElement('button');
             buttonSensor1.className = 'btn btn-danger rounded-0';
             buttonSensor1.style.width = '20px'; 
             buttonSensor1.style.height = '25px'; 
             buttonSensor1.innerHTML = '<i class="fas fa-trash-alt"></i>';  
-            buttonSensor1.onclick = () => deleteSensor(data.sensors[0].idSensor);
+            buttonSensor1.onclick = () => deleteSensor(pullman.sensors[0].idSensor);
 
             const buttonCopy1 = document.createElement('button');
             buttonCopy1.className = 'btn btn-info btn-danger rounded-0';
             buttonCopy1.style.width = '20px'; 
             buttonCopy1.style.height = '25px'; 
             buttonCopy1.innerHTML = '<i class="fas fa-copy"></i>';
-            buttonCopy1.onclick = () => copyConnectionString(data.sensors[0].connectionString);
+            buttonCopy1.onclick = () => copyConnectionString(pullman.sensors[0].connectionString);
 
-            sensor1Element.appendChild(document.createTextNode(`Matricola: ${data.sensors[0].matricola} `));
+            sensor1Element.appendChild(document.createTextNode(`Matricola: ${pullman.sensors[0].matricola} `));
             sensor1Element.appendChild(buttonSensor1);
             sensor1Element.appendChild(buttonCopy1);
         } else {
             sensor1Element.textContent = ' ';
         }
 
-        if (data.sensors.length > 1) {
+        if (pullman.sensors.length > 1) {
             const buttonSensor2 = document.createElement('button');
             buttonSensor2.className = 'btn btn-danger rounded-0';
             buttonSensor2.style.width = '20px'; 
             buttonSensor2.style.height = '25px'; 
             buttonSensor2.innerHTML = '<i class="fas fa-trash-alt"></i>'; 
-            buttonSensor2.onclick = () => deleteSensor(data.sensors[1].idSensor);
+            buttonSensor2.onclick = () => deleteSensor(pullman.sensors[1].idSensor);
 
             const buttonCopy2 = document.createElement('button');
             buttonCopy2.className = 'btn btn-info btn-danger rounded-0';
             buttonCopy2.style.width = '20px'; 
             buttonCopy2.style.height = '25px'; 
             buttonCopy2.innerHTML = '<i class="fas fa-copy"></i>';
-            buttonCopy2.onclick = () => copyConnectionString(data.sensors[1].connectionString);
+            buttonCopy2.onclick = () => copyConnectionString(pullman.sensors[1].connectionString);
 
-            sensor2Element.appendChild(document.createTextNode(`Matricola: ${data.sensors[1].matricola} `));
+            sensor2Element.appendChild(document.createTextNode(`Matricola: ${pullman.sensors[1].matricola} `));
             sensor2Element.appendChild(buttonSensor2);
             sensor2Element.appendChild(buttonCopy2);
         } else {
@@ -311,7 +311,7 @@
         linkElement.href = '#';
         linkElement.style.color = '#003b6e';
         linkElement.addEventListener('click', function() {
-            handleLinkClick(data.sensors);
+            handleLinkClick(pullman.sensors);
         });
         collectedData.appendChild(linkElement);
     }
