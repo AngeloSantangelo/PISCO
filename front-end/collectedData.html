@@ -4,19 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard con Grafico</title>
-  <!-- Collega Bootstrap dal CDN -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body class="bg-light">
 
 <div class="container mt-5">
-  <h2 class="text-center mb-4">Dashboard con Grafico</h2>
+  <h2 id="dashboard" class="text-center mb-4"></h2>
 
-  <!-- Aggiungi un contenitore per i grafici -->
+  <!-- Contenitore per i grafici -->
   <div id="chartContainer" class="row"></div>
 </div>
 
-<!-- Collega Chart.js dal CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
@@ -44,10 +42,14 @@ async function fetchData(idSensor) {
     const labels = [];
     const weeksData = {};
 
-    // Ottenere il mese attuale (quello di sistema)
+    // mese attuale (quello di sistema)
     const actualDate = new Date();
     const actualMonthIndex = actualDate.getMonth();
     const actualMonth = nomiMesi[actualMonthIndex];
+
+    const dashboard = document.getElementById("dashboard");
+    const text = document.createTextNode('Dashboard mese di '+ actualMonth);
+    dashboard.appendChild(text);
 
     const filteredData = data.collectedData.filter(collectedData => {
       const date = new Date(collectedData.date);
@@ -96,24 +98,38 @@ function getWeekNumber(date) {
   return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
 }
 
+function getWeekRange(weekNumber) {
+  const startDate = new Date('2024-01-01');
+  startDate.setDate(startDate.getDate() + (weekNumber - 1) * 7);
+
+  const endDate = new Date(startDate);
+  endDate.setDate(endDate.getDate() + 6);
+
+  const startDay = startDate.toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
+  const endDay = endDate.toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
+
+  return `${startDay} - ${endDay}`;
+}
+
 function getDayOfWeek(daysOfWeek, dayIndex) {
   return daysOfWeek[dayIndex];
 }
 
 function updateChart(weekNumber, labels, peopleNumbers) {
-  // Crea un elemento div per il grafico
+  // elemento div per il grafico
   const chartContainer = document.getElementById('chartContainer');
   const chartDiv = document.createElement('div');
-  chartDiv.className = 'col-md-6'; // Imposta la larghezza del grafico
+  const weekRange = getWeekRange(weekNumber);
+  chartDiv.className = 'col-md-6'; 
   chartDiv.innerHTML = `<div class="card">
                           <div class="card-body">
-                            <h5 class="card-title">Settimana ${weekNumber} - Grafico</h5>
+                            <h5 class="card-title">${weekNumber}° Settimana ---- ${weekRange}</h5>
                             <canvas id="myChart${weekNumber}" width="600" height="400"></canvas>
                           </div>
                         </div>`;
   chartContainer.appendChild(chartDiv);
 
-  // Crea il grafico nella canvas appena creata
+  
   const ctx = document.getElementById(`myChart${weekNumber}`).getContext('2d');
   const myChart = new Chart(ctx, {
     type: 'line',
