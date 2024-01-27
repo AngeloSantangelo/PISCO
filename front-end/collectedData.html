@@ -17,7 +17,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
+
+
+
+
+
 <script>
+  
 const sensor1String = localStorage.getItem("sensor1");
 const sensor1 = JSON.parse(sensor1String);
 
@@ -27,6 +34,18 @@ if(sensor1){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+// funzione principale per recuperare i dati dal database e visualizzarli in maniera corretta
 async function fetchData(idSensor) {  
   try {
     const response = await fetch('http://localhost:7071/api/findDataByIdSensor', {
@@ -93,6 +112,13 @@ async function fetchData(idSensor) {
 }
 
 
+
+
+
+
+
+
+// funzione per il numero della settimana da una data
 function getWeekNumber(date) {
   const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
   const dayNum = d.getUTCDay() || 7;
@@ -104,14 +130,48 @@ function getWeekNumber(date) {
 }
 
 
+
+
+
+
+
+
+
+
+// funzione per il giorno di una settimana
 function getDayOfWeek(daysOfWeek, dayIndex) {
   return daysOfWeek[dayIndex];
 }
 
+
+
+
+
+
+
+
+
+
+
+
+// funzione per il primo giorno di un mese
 function getStartDayOfMonth(year, month) {
   return new Date(year, month, 1).getDay();
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+// funzione per il grafico dinamico
 function updateChart(weekNumber, labels, peopleNumbers) {
   // elemento div per il grafico
   const chartContainer = document.getElementById('chartContainer');
