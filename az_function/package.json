@@ -14,7 +14,8 @@
     "@azure/functions": "^4.0.0",
     "@prisma/client": "^5.7.1",
     "azure-iothub": "^1.16.4",
-    "chart.js": "^4.4.1"
+    "chart.js": "^4.4.1",
+    "date-fns": "^3.3.1"
   },
   "devDependencies": {
     "@types/node": "^18.x",

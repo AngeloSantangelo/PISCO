@@ -25,6 +25,8 @@ if(sensor1){
   fetchData(sensor1.idSensor);
 }
 
+
+
 async function fetchData(idSensor) {  
   try {
     const response = await fetch('http://localhost:7071/api/findDataByIdSensor', {
@@ -39,22 +41,23 @@ async function fetchData(idSensor) {
     ];
 
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const labels = [];
-    const weeksData = {};
 
     // mese attuale (quello di sistema)
     const actualDate = new Date();
     const actualMonthIndex = actualDate.getMonth();
-    const actualMonth = nomiMesi[actualMonthIndex];
+    const startDayOfMonth = getStartDayOfMonth(actualDate.getFullYear(), actualMonthIndex);
+    const startDayOfWeekIndex = daysOfWeek.indexOf(getDayOfWeek(daysOfWeek, startDayOfMonth));
 
     const dashboard = document.getElementById("dashboard");
-    const text = document.createTextNode('Dashboard mese di '+ actualMonth);
+    const text = document.createTextNode('Dashboard mese di '+ nomiMesi[actualMonthIndex]);
     dashboard.appendChild(text);
 
     const filteredData = data.collectedData.filter(collectedData => {
       const date = new Date(collectedData.date);
-      return date.getMonth() === actualMonthIndex;
+      return date.getMonth() === actualMonthIndex && date.getFullYear() === actualDate.getFullYear();
     });
+
+    const weeksData = {};
 
     filteredData.forEach(filteredData => {
       const date = new Date(filteredData.date);
@@ -69,19 +72,18 @@ async function fetchData(idSensor) {
 
     for (const weekNumber in weeksData) {
       const weekData = weeksData[weekNumber];
-      const weekLabels = daysOfWeek.map(day => `${day}`);
       const maxPeopleNumbers = {};
 
       weekData.forEach(filteredData => {
         const date = new Date(filteredData.date);
-        const dayOfWeek = getDayOfWeek(daysOfWeek, date.getDay());
-        const key = `${dayOfWeek}`;
+        const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' }); // nome del giorno della settimana
 
-        if (!maxPeopleNumbers[key] || filteredData.peopleNumber > maxPeopleNumbers[key]) {
-          maxPeopleNumbers[key] = filteredData.peopleNumber;
+        if (!maxPeopleNumbers[dayOfWeek] || filteredData.peopleNumber > maxPeopleNumbers[dayOfWeek]) {
+          maxPeopleNumbers[dayOfWeek] = filteredData.peopleNumber;
         }
       });
 
+      const weekLabels = Object.keys(maxPeopleNumbers);
       const peopleNumbers = weekLabels.map(label => maxPeopleNumbers[label] || 0);
       updateChart(weekNumber, weekLabels, peopleNumbers);
     }
@@ -90,40 +92,34 @@ async function fetchData(idSensor) {
   }
 }
 
+
 function getWeekNumber(date) {
   const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
   const dayNum = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
   return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+
+  return weekNumber;
 }
 
-function getWeekRange(weekNumber) {
-  const startDate = new Date('2024-01-01');
-  startDate.setDate(startDate.getDate() + (weekNumber - 1) * 7);
-
-  const endDate = new Date(startDate);
-  endDate.setDate(endDate.getDate() + 6);
-
-  const startDay = startDate.toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
-  const endDay = endDate.toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
-
-  return `${startDay} - ${endDay}`;
-}
 
 function getDayOfWeek(daysOfWeek, dayIndex) {
   return daysOfWeek[dayIndex];
+}
+
+function getStartDayOfMonth(year, month) {
+  return new Date(year, month, 1).getDay();
 }
 
 function updateChart(weekNumber, labels, peopleNumbers) {
   // elemento div per il grafico
   const chartContainer = document.getElementById('chartContainer');
   const chartDiv = document.createElement('div');
-  const weekRange = getWeekRange(weekNumber);
   chartDiv.className = 'col-md-6'; 
   chartDiv.innerHTML = `<div class="card">
                           <div class="card-body">
-                            <h5 class="card-title">${weekNumber}° Settimana ---- ${weekRange}</h5>
+                            <h5 class="card-title">${weekNumber}° Settimana</h5>
                             <canvas id="myChart${weekNumber}" width="600" height="400"></canvas>
                           </div>
                         </div>`;
