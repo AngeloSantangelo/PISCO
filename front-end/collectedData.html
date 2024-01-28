@@ -10,27 +10,16 @@
 
 <div class="container mt-5">
   <h2 id="dashboard" class="text-center mb-4"></h2>
-
-  <!-- Contenitore per i grafici -->
   <div id="chartContainer" class="row"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-
-
-
-
-
 <script>
-  
-const sensor1String = localStorage.getItem("sensor1");
-const sensor1 = JSON.parse(sensor1String);
 
-if(sensor1){
-  fetchData(sensor1.idSensor);
-}
+  const sensor1 = JSON.parse(localStorage.getItem("sensor1"));
+  if (sensor1) {
+    fetchData(sensor1.idSensor);
+  }
 
 
 
@@ -45,119 +34,39 @@ if(sensor1){
 
 
 
-// funzione principale per recuperare i dati dal database e visualizzarli in maniera corretta
-async function fetchData(idSensor) {  
-  try {
-    const response = await fetch('http://localhost:7071/api/findDataByIdSensor', {
-      method: 'POST',
-      body: JSON.stringify({ idSensor }),
-    });
 
-    const data = await response.json();
-    const nomiMesi = [
-      'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
-      'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
-    ];
 
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-    // mese attuale (quello di sistema)
-    const actualDate = new Date();
-    const actualMonthIndex = actualDate.getMonth();
-    const startDayOfMonth = getStartDayOfMonth(actualDate.getFullYear(), actualMonthIndex);
-    const startDayOfWeekIndex = daysOfWeek.indexOf(getDayOfWeek(daysOfWeek, startDayOfMonth));
-
-    const dashboard = document.getElementById("dashboard");
-    const text = document.createTextNode('Dashboard mese di '+ nomiMesi[actualMonthIndex]);
-    dashboard.appendChild(text);
-
-    const filteredData = data.collectedData.filter(collectedData => {
-      const date = new Date(collectedData.date);
-      return date.getMonth() === actualMonthIndex && date.getFullYear() === actualDate.getFullYear();
-    });
-
-    const weeksData = {};
-
-    filteredData.forEach(filteredData => {
-      const date = new Date(filteredData.date);
-      const weekNumber = getWeekNumber(date);
-
-      if (!weeksData[weekNumber]) {
-        weeksData[weekNumber] = [];
-      }
-
-      weeksData[weekNumber].push(filteredData);
-    });
-
-    for (const weekNumber in weeksData) {
-      const weekData = weeksData[weekNumber];
-      const maxPeopleNumbers = {};
-
-      weekData.forEach(filteredData => {
-        const date = new Date(filteredData.date);
-        const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' }); // nome del giorno della settimana
-
-        if (!maxPeopleNumbers[dayOfWeek] || filteredData.peopleNumber > maxPeopleNumbers[dayOfWeek]) {
-          maxPeopleNumbers[dayOfWeek] = filteredData.peopleNumber;
-        }
+  // raccolta dei dati sulle misurazioni
+  async function fetchData(idSensor) {
+    try {
+      const response = await fetch('http://localhost:7071/api/findDataByIdSensor', {
+        method: 'POST',
+        body: JSON.stringify({ idSensor }),
       });
 
-      const weekLabels = Object.keys(maxPeopleNumbers);
-      const peopleNumbers = weekLabels.map(label => maxPeopleNumbers[label] || 0);
-      updateChart(weekNumber, weekLabels, peopleNumbers);
+      const data = await response.json();
+      const actualDate = new Date();
+      const actualMonthIndex = actualDate.getMonth();
+      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+      const dashboard = document.getElementById("dashboard");
+      dashboard.textContent = `Dashboard mese di ${getMonthName(actualMonthIndex)}`;
+
+      const weeksData = organizeDataByWeek(data.collectedData, actualMonthIndex, actualDate.getFullYear(), daysOfWeek);
+
+      for (const weekNumber in weeksData) {
+        const weekData = weeksData[weekNumber];
+        const maxPeopleNumbers = getMaxPeopleNumbers(weekData);
+
+        const weekLabels = Object.keys(maxPeopleNumbers);
+        const peopleNumbers = weekLabels.map(label => maxPeopleNumbers[label] || 0);
+        updateChart(weekNumber, weekLabels, peopleNumbers);
+      }
+    } catch (error) {
+      console.error(error);
     }
-  } catch (error) {
-    console.error(error);
   }
-}
-
-
-
-
-
-
-
-
-// funzione per il numero della settimana da una data
-function getWeekNumber(date) {
-  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-  const dayNum = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-  return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
-
-  return weekNumber;
-}
-
-
-
-
-
-
-
-
-
-
-// funzione per il giorno di una settimana
-function getDayOfWeek(daysOfWeek, dayIndex) {
-  return daysOfWeek[dayIndex];
-}
-
-
-
-
-
-
-
-
-
-
-
-
-// funzione per il primo giorno di un mese
-function getStartDayOfMonth(year, month) {
-  return new Date(year, month, 1).getDay();
-}
 
 
 
@@ -171,47 +80,146 @@ function getStartDayOfMonth(year, month) {
 
 
 
-// funzione per il grafico dinamico
-function updateChart(weekNumber, labels, peopleNumbers) {
-  // elemento div per il grafico
-  const chartContainer = document.getElementById('chartContainer');
-  const chartDiv = document.createElement('div');
-  chartDiv.className = 'col-md-6'; 
-  chartDiv.innerHTML = `<div class="card">
-                          <div class="card-body">
-                            <h5 class="card-title">${weekNumber}° Settimana</h5>
-                            <canvas id="myChart${weekNumber}" width="600" height="400"></canvas>
-                          </div>
-                        </div>`;
-  chartContainer.appendChild(chartDiv);
 
-  
-  const ctx = document.getElementById(`myChart${weekNumber}`).getContext('2d');
-  const myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'People Number',
-        data: peopleNumbers,
-        fill: false,
-        borderColor: '#003b6e',
-        borderWidth: 2
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: 'People Number'
-          },
+
+
+  //funzione per recuperare il numero della settimana
+  function getWeekNumber(date) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //funzione per recuperare il nome del mese
+  function getMonthName(monthIndex) {
+    const nomiMesi = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
+    return nomiMesi[monthIndex];
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //funzione per organizzare i dati in settimane e per ogni mese
+  function organizeDataByWeek(collectedData, monthIndex, year, daysOfWeek) {
+    const weeksData = {};
+
+    collectedData.forEach(filteredData => {
+      const date = new Date(filteredData.date);
+      if (date.getMonth() === monthIndex && date.getFullYear() === year) {
+        const weekNumber = getWeekNumber(date);
+        weeksData[weekNumber] = weeksData[weekNumber] || [];
+        weeksData[weekNumber].push(filteredData);
+      }
+    });
+
+    return weeksData;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //prendere il massimo tra le misurazioni di un solo giorno
+  function getMaxPeopleNumbers(weekData) {
+    const maxPeopleNumbers = {};
+
+    weekData.forEach(filteredData => {
+      const date = new Date(filteredData.date);
+      const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });
+
+      if (!maxPeopleNumbers[dayOfWeek] || filteredData.peopleNumber > maxPeopleNumbers[dayOfWeek]) {
+        maxPeopleNumbers[dayOfWeek] = filteredData.peopleNumber;
+      }
+    });
+
+    return maxPeopleNumbers;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //funzione per disegnare un grafico
+  function updateChart(weekNumber, labels, peopleNumbers) {
+    const chartContainer = document.getElementById('chartContainer');
+    const chartDiv = document.createElement('div');
+    chartDiv.className = 'col-md-6';
+    chartDiv.innerHTML = `<div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">${weekNumber}° Settimana</h5>
+                              <canvas id="myChart${weekNumber}" width="600" height="400"></canvas>
+                            </div>
+                          </div>`;
+    chartContainer.appendChild(chartDiv);
+
+    const ctx = document.getElementById(`myChart${weekNumber}`).getContext('2d');
+    const myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'People Number',
+          data: peopleNumbers,
+          fill: false,
+          borderColor: '#003b6e',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'People Number'
+            },
+          }
         }
       }
-    }
-  });
-}
+    });
+  }
 </script>
 
 </body>
