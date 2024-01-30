@@ -34,7 +34,7 @@ def main():
     print("IoT Hub Quickstart #1 - Simulated device")
     print("Press Ctrl-C to exit")
 
-    client = IoTHubDeviceClient.create_from_connection_string("HostName=piscoIoT.azure-devices.net;DeviceId=2;SharedAccessKey=XckcyvTf5F7w/+Ja6lYkWAgQqc0KdRcbbAIoTAzNka0=")
+    client = IoTHubDeviceClient.create_from_connection_string("HostName=pisco-iot-hub.azure-devices.net;DeviceId=85;SharedAccessKey=//3s2QaWQOX97FXJrbOGq5btRYSI42JhsAIoTASg9Ak=")
 
     try:
         run_telemetry_sample(client)
