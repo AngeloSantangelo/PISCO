@@ -7,9 +7,9 @@ import { createPullman } from "./createPullman";
 export async function createSensor(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     const prisma = new PrismaClient()
     
-    /*var iothub = require('azure-iothub');
+    var iothub = require('azure-iothub');
     var connectionString = process.env.IOT_HUB_CONNECTION_STRING;
-    var registry = iothub.Registry.fromConnectionString(connectionString);*/
+    var registry = iothub.Registry.fromConnectionString(connectionString);
 
    try{
     const data:any = await request.json();
@@ -25,7 +25,7 @@ export async function createSensor(request: HttpRequest, context: InvocationCont
         },
     });
 
-    /*const device = (await registry.create({
+    const device = (await registry.create({
         deviceId:sensor.idSensor
     })).responseBody;
 
@@ -45,12 +45,12 @@ export async function createSensor(request: HttpRequest, context: InvocationCont
             updateSensor
         },
     };
-*/
-return {
-    jsonBody: {
-        sensor
-    },
-};
+
+// return {
+//     jsonBody: {
+//         sensor
+//     },
+// };
 
     }catch(error){
         console.error('Errore durante l\'elaborazione della richiesta:', error);
