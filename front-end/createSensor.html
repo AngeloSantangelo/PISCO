@@ -31,7 +31,7 @@
     <script>
     document.addEventListener("DOMContentLoaded", function () {
     // Fetch per ottenere la lista di pullman al caricamento della pagina
-    fetch('http://localhost:7071/api/findAllPullman')
+    fetch('https://piscoofunction.azurewebsites.net/api/findallpullman')
         .then(response => response.json())
         .then(data => {
             const pullmanDropdown = document.getElementById("pullman");
@@ -64,7 +64,7 @@ document.getElementById("sensorForm").addEventListener("submit", function (event
     const matricola = document.getElementById("matricola").value;
     const idPullman = parseInt(document.getElementById("pullman").value);
 
-    fetch('http://localhost:7071/api/createSensor', {
+    fetch('https://piscoofunction.azurewebsites.net/api/createsensor', {
         method: 'POST',
         body: JSON.stringify({ matricola, idPullman }),
     })

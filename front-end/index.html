@@ -37,7 +37,7 @@
         <div class="container-fluid">
             <!-- Logo -->
             <a class="navbar-brand" href="#">
-                <img src="../img/LogoPISCO.png" alt="LogoPisco" height="60" width="100" class="d-inline-block align-top">
+                <img src="img/LogoPISCO.png" alt="LogoPisco" height="60" width="100" class="d-inline-block align-top">
             </a>
     
             <!-- Bottoni -->
@@ -157,7 +157,7 @@
 
     //Funziona per eliminare un pullman
     async function deletePullman(idPullman) {
-        fetch('http://localhost:7071/api/deletePullman', {
+        fetch('https://piscoofunction.azurewebsites.net/api/deletepullman', {
             method: 'POST',
             body: JSON.stringify({ idPullman }),
         })
@@ -192,7 +192,7 @@
 
 
     async function loadPullmanData() {
-        const response = await fetch('http://localhost:7071/api/findAllPullman');
+        const response = await fetch('https://piscoofunction.azurewebsites.net/api/findallpullman');
         const data = await response.json();
 
         const tableBody = document.getElementById('pullmanTableBody');
@@ -328,7 +328,7 @@ function handleLinkClick(sensors) {
 
 // Funzione per eliminare un sensore
 async function deleteSensor(idSensor) {
-    fetch('http://localhost:7071/api/deleteSensor', {
+    fetch('https://piscoofunction.azurewebsites.net/api/deletesensor', {
         method: 'POST',
         body: JSON.stringify({ idSensor }),
     })

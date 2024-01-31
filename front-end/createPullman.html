@@ -45,7 +45,7 @@
             const numPosti = document.getElementById("numPosti").value;
 
             // Invia i dati al backend
-            fetch('http://localhost:7071/api/createPullman', {
+            fetch('https://piscoofunction.azurewebsites.net/api/createpullman', {
                 method: 'POST',
                 
                 body: JSON.stringify({ matricola, numPiani, numPosti }),
