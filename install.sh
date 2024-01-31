@@ -4,53 +4,13 @@ SQL_SERVER="piscooserver"
 SHADOW_DB="pisco_shadow"
 SQL_DATABASE="pisco_db"
 USERNAME="pisco"
-PASSWORD="#"
-IOT_HUB="pisco-iot-hub"
+PASSWORD="Djangelo19."
+IOT_HUB="piscooiothub"
 FUNCTION_APP="piscoofunction"
 STORAGE_ACCOUNT="piscoaccount"
 STREAM_JOB="pisco_job"
-
-iot_hub_policy_name="iothubowner"
-
-
-
-
-# # Ottieni la chiave della policy dell'IoT Hub
-# iot_hub_policy_key=$(az iot hub policy show --hub-name $IOT_HUB -n $iot_hub_policy_name | jq -r '.primaryKey')
-
-# # Configura l'input per lo Stream Analytics Job
-# input_properties=$(cat <<EOF
-# {
-#   "type": "Stream",
-#   "datasource": {
-#     "type": "Microsoft.Devices/IotHubs",
-#     "properties": {
-#       "consumerGroupName": "\$Default",
-#       "endpoint": "messages/events",
-#       "iotHubNamespace": "$IOT_HUB",
-#       "sharedAccessPolicyKey": "$iot_hub_policy_key",
-#       "sharedAccessPolicyName": "$iot_hub_policy_name"
-#     }
-#   },
-#   "serialization": {
-#     "type": "Json",
-#     "properties": {
-#       "encoding": "UTF8"
-#     }
-#   }
-# }
-# EOF
-# )
-
-# echo "Creating input for Stream Analytics Job $stream_analytics_job_name: $SAJ_input_name"
-# az stream-analytics input create --name $IOT_HUB --job-name $STREAM_JOB --resource-group $RESOURCE_GROUP --properties "$input_properties"
-
-
-
-
-
-
-
+IOT_HUB_POLICY_NAME="iothubowner"
+OUTPUT_NAME="piscodatabase"
 
 
 # echo "Login to Azure ..."
@@ -85,29 +45,58 @@ iot_hub_policy_name="iothubowner"
 # echo "Creating the function app $FUNCTION_APP"
 # az functionapp create --name $FUNCTION_APP --storage-account $STORAGE_ACCOUNT --resource-group $RESOURCE_GROUP --consumption-plan-location $LOCATION --runtime node --runtime-version 18 --functions-version 4 --os-type Linux
 
-# echo "Creating stream analytics job $STREAM_JOB"
-# az stream-analytics job create --name $STREAM_JOB --resource-group $RESOURCE_GROUP --location $LOCATION --transformation name="transformationSAJ" streaming-units=1
 
-# echo "Configuring input with IoT Hub"
-# az stream-analytics input create --job-name $STREAM_JOB --name $IOT_HUB --type "stream" --datasource "IoTHub" --properties $INPUT_IOT_HUB
+# echo "Creating stream analytics job $STREAM_JOB ..."
+# az stream-analytics job create --name $STREAM_JOB --resource-group $RESOURCE_GROUP --location $LOCATION --transformation name="transformationtest" streaming-units=1 query="SELECT peopleNumber INTO [$OUTPUT_NAME] FROM [$IOT_HUB]"
 
-# echo "Configuring output with database"
-# az stream-analytics output create --job-name $STREAM_JOB --name "OutputTableStorage" --type "Table" --datasource "Table" --properties '{"accountName":"NomeAccountTableStorage","accountKey":"ChiaveAccountTableStorage","table":"CollectedData"}'
 
+# # Prendere la chiave della policy dell'IoT Hub
+# IOT_HUB_POLICY_KEY=$(az iot hub policy show --hub-name $IOT_HUB -n $IOT_HUB_POLICY_NAME | jq -r '.primaryKey')
+# # Configurazione input per lo Stream Analytics Job
+# INPUT_PROPERTIES=$(cat <<EOF
+# {
+#   "type": "Stream",
+#   "datasource": {
+#     "type": "Microsoft.Devices/IotHubs",
+#     "properties": {
+#       "consumerGroupName": "\$Default",
+#       "endpoint": "messages/events",
+#       "iotHubNamespace": "$IOT_HUB",
+#       "sharedAccessPolicyKey": "$IOT_HUB_POLICY_KEY",
+#       "sharedAccessPolicyName": "$IOT_HUB_POLICY_NAME"
+#     }
+#   },
+#   "serialization": {
+#     "type": "Json",
+#     "properties": {
+#       "encoding": "UTF8"
+#     }
+#   }
+# }
+# EOF
+# )
+
+# # Il nome dell'input sarà uguale al nome dell'IoT-Hub (scelta progettuale)
+# echo "Configuring input for Stream Analytics Job $STREAM_JOB: $IOT_HUB ..."
+# az stream-analytics input create --name $IOT_HUB --job-name $STREAM_JOB --resource-group $RESOURCE_GROUP --properties "$INPUT_PROPERTIES"
+
+
+# Configurazione output per lo Stream Analytics Job 
+# Il nome dell'ouptut sarà diverso dal nome del Database perchè vi è il divieto di inserire carattere speciale come '_' (underscore)
+
+# TABLE_DATABASE_OUTPUT="CollectedData"
+# echo "Configuring output for Stream Analytics Job $STREAM_JOB: $OUTPUT_NAME ..."
+# az stream-analytics output create --job-name $STREAM_JOB --datasource "{\"type\":\"Microsoft.Sql/Server/Database\",\"properties\":{\"server\":\"$SQL_SERVER\",\"database\":\"$SQL_DATABASE\",\"user\":\"$USERNAME\",\"password\":\"$PASSWORD\",\"table\":\"$TABLE_DATABASE_OUTPUT\"}}" --serialization "{\"type\":\"Json\",\"properties\":{\"format\":\"Array\",\"encoding\":\"UTF8\"}}" --output-name $OUTPUT_NAME --resource-group $RESOURCE_GROUP
+
+
+echo "Starting the Process of Stream Analytics Job $STREAM_JOB ..."
+az stream-analytics job start --name $STREAM_JOB --resource-group $RESOURCE_GROUP
+
+
+# echo "Generating scheme Prisma ..."
 # cd az_function
 # npx prisma generate
 # npx prisma db push
+
+# echo "Deploying Azure Function on $FUNCTION_APP ..."
 # func azure functionapp publish $FUNCTION_APP
-
-
-
-
-
-
-
-
-
-#Configura l'output per lo Stream Analytics Job
-
-echo "Creating output for Stream Analytics Job $STREAM_JOB: $SQL_DATABASE"
-az stream-analytics output create --job-name $STREAM_JOB --datasource "{\"type\":\"Microsoft.Sql/Server/Database\",\"properties\":{\"server\":\"$SQL_SERVER\",\"database\":\"$SQL_DATABASE\",\"user\":\"$USERNAME\",\"password\":\"$PASSWORD\",\"table\":\"CollectedData\"}}" --serialization "{\"type\":\"Json\",\"properties\":{\"format\":\"Array\",\"encoding\":\"UTF8\"}}" --output-name piscodatabase --resource-group $RESOURCE_GROUP
