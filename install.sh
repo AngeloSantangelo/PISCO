@@ -4,7 +4,7 @@ SQL_SERVER="piscooserver"
 SHADOW_DB="pisco_shadow"
 SQL_DATABASE="pisco_db"
 USERNAME="pisco"
-PASSWORD="Djangelo19."
+PASSWORD="#"
 IOT_HUB="piscooiothub"
 FUNCTION_APP="piscoofunction"
 STORAGE_ACCOUNT="piscoaccount"
@@ -43,7 +43,18 @@ echo "Creating the storage account $STORAGE_ACCOUNT"
 az storage account create --name $STORAGE_ACCOUNT --resource-group $RESOURCE_GROUP --location $LOCATION --sku Standard_LRS --kind StorageV2
 
 echo "Creating the function app $FUNCTION_APP"
-az functionapp create --name $FUNCTION_APP --storage-account $STORAGE_ACCOUNT --resource-group $RESOURCE_GROUP --consumption-plan-location $LOCATION --runtime node --runtime-version 18 --functions-version 4 --os-type Linux
+az functionapp create --name $FUNCTION_APP --resource-group $RESOURCE_GROUP --consumption-plan-location $LOCATION --runtime node --runtime-version 18 --functions-version 4 --os-type Linux --storage-account $STORAGE_ACCOUNT
+
+echo "Generating scheme Prisma ..."
+cd az_function
+npx prisma generate
+npx prisma db push
+
+echo "Waiting for additional time before deploying..."
+sleep 10
+
+echo "Deploying Azure Function on $FUNCTION_APP ..."
+func azure functionapp publish $FUNCTION_APP
 
 
 echo "Creating stream analytics job $STREAM_JOB ..."
@@ -90,12 +101,3 @@ az stream-analytics output create --job-name $STREAM_JOB --datasource "{\"type\"
 
 echo "Starting the Process of Stream Analytics Job $STREAM_JOB ..."
 az stream-analytics job start --name $STREAM_JOB --resource-group $RESOURCE_GROUP
-
-
-echo "Generating scheme Prisma ..."
-cd az_function
-npx prisma generate
-npx prisma db push
-
-echo "Deploying Azure Function on $FUNCTION_APP ..."
-func azure functionapp publish $FUNCTION_APP

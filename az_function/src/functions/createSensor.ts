@@ -37,7 +37,7 @@ export async function createSensor(request: HttpRequest, context: InvocationCont
         data: {
           connectionString: cs,
         },
-      })
+    })
 
     return {
         status:200,

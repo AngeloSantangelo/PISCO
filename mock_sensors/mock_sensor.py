@@ -3,7 +3,7 @@ import random
 import time
 from azure.iot.device import IoTHubDeviceClient, Message
 
-idSensor = 1
+idSensor = 3
 
 MSG_TXT = '{{"peopleNumber": {number}, "idSensor": {idSensor}}}'
 
@@ -36,7 +36,7 @@ def main():
     print("IoT Hub Quickstart #1 - Simulated device")
     print("Press Ctrl-C to exit")
 
-    client = IoTHubDeviceClient.create_from_connection_string("HostName=piscooiothub.azure-devices.net;DeviceId=85;SharedAccessKey=//3s2QaWQOX97FXJrbOGq5btRYSI42JhsAIoTASg9Ak=")
+    client = IoTHubDeviceClient.create_from_connection_string("HostName=piscooiothub.azure-devices.net;DeviceId=3;SharedAccessKey=VzbXTMS2fHYhr2tI3HaJe4YmwatbbzWl7AIoTMG2ojw=")
 
     try:
         run_telemetry_sample(client)
