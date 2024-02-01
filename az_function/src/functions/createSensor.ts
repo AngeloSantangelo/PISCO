@@ -3,7 +3,6 @@ import { PrismaClient } from '@prisma/client'
 import { createPullman } from "./createPullman";
 
 
-
 export async function createSensor(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     const prisma = new PrismaClient()
     
