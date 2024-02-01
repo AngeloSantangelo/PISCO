@@ -29,7 +29,7 @@ export async function createSensor(request: HttpRequest, context: InvocationCont
         deviceId:sensor.idSensor
     })).responseBody;
 
-    var cs =  `HostName=piscoIoT.azure-devices.net;DeviceId=${sensor.idSensor};SharedAccessKey=${device.authentication.symmetricKey.primaryKey}`;
+    var cs =  `HostName=piscooiothub.azure-devices.net;DeviceId=${sensor.idSensor};SharedAccessKey=${device.authentication.symmetricKey.primaryKey}`;
 
     const updateSensor = await prisma.sensor.update({
         where: {
@@ -41,6 +41,7 @@ export async function createSensor(request: HttpRequest, context: InvocationCont
       })
 
     return {
+        status:200,
         jsonBody: {
             updateSensor
         },
