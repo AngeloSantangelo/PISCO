@@ -4,7 +4,7 @@ SQL_SERVER="piscooserver"
 SHADOW_DB="pisco_shadow"
 SQL_DATABASE="pisco_db"
 USERNAME="pisco"
-PASSWORD="#"
+PASSWORD="Djangelo19."
 IOT_HUB="piscooiothub"
 FUNCTION_APP="piscoofunction"
 STORAGE_ACCOUNT="piscoaccount"
@@ -51,7 +51,7 @@ az stream-analytics job create --name $STREAM_JOB --resource-group $RESOURCE_GRO
 
 
 # Prendere la chiave della policy dell'IoT Hub
-IOT_HUB_POLICY_KEY=$(az iot hub policy show --hub-name $IOT_HUB -n $IOT_HUB_POLICY_NAME | jq -r '.primaryKey')
+IOT_HUB_POLICY_KEY=$(az iot hub policy show --hub-name $IOT_HUB -n "iothubowner" | jq -r '.primaryKey')
 # Configurazione input per lo Stream Analytics Job
 INPUT_PROPERTIES=$(cat <<EOF
 {
