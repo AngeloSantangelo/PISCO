@@ -47,12 +47,6 @@ export async function createSensor(request: HttpRequest, context: InvocationCont
         },
     };
 
-// return {
-//     jsonBody: {
-//         sensor
-//     },
-// };
-
     }catch(error){
         console.error('Errore durante l\'elaborazione della richiesta:', error);
         return { body: error };
