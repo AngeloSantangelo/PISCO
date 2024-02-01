@@ -3,7 +3,9 @@ import random
 import time
 from azure.iot.device import IoTHubDeviceClient, Message
 
-MSG_TXT = '{{"peopleNumber": {number}}}'
+idSensor = 1
+
+MSG_TXT = '{{"peopleNumber": {number}, "idSensor": {idSensor}}}'
 
 
 def run_telemetry_sample(client):
@@ -14,7 +16,7 @@ def run_telemetry_sample(client):
 
     
     number = random.randint(1, 100)
-    msg_txt_formatted = MSG_TXT.format(number=number)
+    msg_txt_formatted = MSG_TXT.format(number=number, idSensor=idSensor)
     message = Message(msg_txt_formatted)
 
     # if number > 30:

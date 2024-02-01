@@ -35,7 +35,7 @@ echo "Creating the IoT Hub $IOT_HUB"
 az iot hub create -n $IOT_HUB --resource-group $RESOURCE_GROUP --sku F1 --partition-count 2 --location $LOCATION
 
 echo "" >> az_function/.env
-echo IOT_HUB_CONNECTION_STRING="$( az iot hub connection-string show --hub-name $IOT_HUB --resource-group $RESOURCE_GROUP | jq '.connectionString' )" >> az_function/.env
+echo IOT_HUB_CONNECTION_STRING="$( az iot hub connection-string show --hub-name $IOT_HUB --policy-name registryReadWrite --resource-group $RESOURCE_GROUP | jq '.connectionString' )" >> az_function/.env
 echo "DATABASE_URL=\"sqlserver://$SQL_SERVER.database.windows.net:1433;database=$SQL_DATABASE;user=$USERNAME@$SQL_SERVER;password=$PASSWORD\"" >> az_function/.env
 echo "SHADOW_DATABASE_URL=\"sqlserver://$SQL_SERVER.database.windows.net:1433;database=$SHADOW_DB;user=$USERNAME@$SQL_SERVER;password=$PASSWORD\"" >> az_function/.env
 
@@ -47,7 +47,7 @@ az functionapp create --name $FUNCTION_APP --storage-account $STORAGE_ACCOUNT --
 
 
 echo "Creating stream analytics job $STREAM_JOB ..."
-az stream-analytics job create --name $STREAM_JOB --resource-group $RESOURCE_GROUP --location $LOCATION --transformation name="transformationtest" streaming-units=1 query="SELECT peopleNumber INTO [$OUTPUT_NAME] FROM [$IOT_HUB]"
+az stream-analytics job create --name $STREAM_JOB --resource-group $RESOURCE_GROUP --location $LOCATION --transformation name="transformationtest" streaming-units=1 query="SELECT peopleNumber, idSensor INTO [$OUTPUT_NAME] FROM [$IOT_HUB]"
 
 
 # Prendere la chiave della policy dell'IoT Hub
