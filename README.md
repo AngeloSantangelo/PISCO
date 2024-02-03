@@ -28,6 +28,8 @@ PISCO è un sistema Cloud-based che sfrutta le tecnologie Internet of Things (Io
 ## Configurazione dell'infrastruttura di Azure
 Per effettuare il provisioning di tutte le risorse dell'infrastruttura, necessarie per il funzionamento di PISCO, è stato implementato uno script bash che permette di automatizzare l'intera procedura. É necessario modificare le variabili d'ambiente contenute nel file "install.sh", specificandone i valori per il proprio progetto. Successivamente, bisogna eseguire il prossimo comando
 ```bash
-#!/bin/bash
 
-echo "Hello, World!"
+bash install.sh
+
+```
+contino
