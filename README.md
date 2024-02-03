@@ -32,7 +32,8 @@ Per automatizzare la procedura di provisioning di tutte le risorse necessarie pe
 bash install.sh
 
 ```
-Questo comando garantirà l'esecuzione del provisioning dell'infrastruttura con le impostazioni personalizzate definite nel file "install.sh".
+Questo comando garantirà l'esecuzione del provisioning dell'infrastruttura con le impostazioni personalizzate definite nel file "install.sh". Tuttavia, la creazione delle [Azure Static Web Apps](https://learn.microsoft.com/en-us/azure/static-web-apps/get-started-portal?tabs=vanilla-javascript&pivots=github) non è inclusa all'interno di questo script. Pertanto, per configurare correttamente tale servizio, è necessario eseguire manualmente il processo previsto direttamente su Azure.
+
 
 Un ulteriore script Bash (uninstall.sh) è stato implementato per automatizzare il processo di eliminazione di tutte le risorse precedentemente create. Per avviare questa procedura, esegui il seguente comando:
 ```bash
