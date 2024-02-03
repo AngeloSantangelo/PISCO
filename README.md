@@ -17,3 +17,6 @@ PISCO è un sistema Cloud-based che sfrutta le tecnologie Internet of Things (Io
 - Azure SQL Database archivia tutti i dati raccolti dai sensori e dalle Azure Function.
 - Le Azure Functions rappresentano una componente serverless che risponde a eventi richiesti dal servizio App Service e hanno accesso al database. Verranno utilizzate anche per recuperare, dal database, i dati raccolti dai sensori e visualizzarli sottoforma di grafici all'interno della pagina web. 
 - L'App Service è il componente che ospita l'applicazione web. L'utente interagirà con l'applicazione inviando richieste come creazione ed eliminazione di pullman e sensori, le quali verranno soddisfatte tramite le Azure Functions.
+## Requisiti
+- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) per eseguire il provisioning dell'infrastruttura.
+- Node.js (v20.9.0), TypeScript (v4.0.0) e Prisma (v^5.7.1) per effettuare il deploy delle risorse.
