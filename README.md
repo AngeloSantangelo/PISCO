@@ -1,9 +1,13 @@
 ![Logo PISCO](https://github.com/AngeloSantangelo/PISCO/assets/115495018/e7e96419-f808-49ae-afc9-19542b2db25d)
 
 # PISCO (Pullman IoT Software with Cloud Optimization)
-PISCO è un sistema Cloud-based ideato per compagnie di trasporto pubblico, concentrandosi principalmente sui servizi di trasporto via pullman, realizzato come progetto Universitario per il corso di Cloud Computing del dipartimento di Informatica presso l'Università degli Studi di Salerno.
-## Obiettivo
-L'obiettivo è offrire un sistema di monitoraggio in tempo reale dell'afflusso dei passeggeri su tali mezzi attraverso l'utilizzo di sensori IoT installati internamente, fornendo informazioni e insight preziosi per ottimizzare le corse e migliorare l'efficienza operativa complessiva.
+PISCO è un sistema ideato per compagnie di trasporto pubblico ed è stato realizzato come progetto Universitario per il corso di Cloud Computing del dipartimento di Informatica presso l'Università degli Studi di Salerno.
+## Obiettivo e Descrizione
+PISCO è un sistema Cloud-based che sfrutta le tecnologie Internet of Things (IoT) per modernizzare la gestione del trasporto pubblico e per monitorare e gestire i pullman in maniera efficiente. L'obiettivo di PISCO è offrire un sistema di monitoraggio in tempo reale dell'afflusso dei passeggeri a bordo su tali mezzi attraverso l'utilizzo di sensori IoT installati internamente, fornendo informazioni e insight preziosi per ottimizzare le corse e migliorare l'efficienza operativa complessiva.
+## Funzionalità
+- Creazione ed Eliminazione dei pullman.
+- Creazione ed Eliminazione dei sensori con annessa assegnazione al corrispondente pullman.
+- Visualizzazione in tempo reale dei dati inviati dai sensori mediante grafici che riporteranno esclusivamente i giorni in cui un pullman è stato in servizio, indicando il numero massimo di passeggeri saliti a bordo in ciascuna di tali giornate. L'azienda, in questo modo, può beneficiare di una visione chiara dell'affluenza giornaliera, consentendole di valutare la necessità di inserire ulteriori pullman e garantire un ambiente più sicuro evitando situazioni di sovraffollamento.
 ## Architettura di PISCO
 ![ArchitetturaPisco](https://github.com/AngeloSantangelo/PISCO/assets/115495018/dc2c85c2-254c-49e6-a5ca-348ecb81a920)
 ## Descrizione dell'architettura
