@@ -26,10 +26,18 @@ PISCO è un sistema Cloud-based che sfrutta le tecnologie Internet of Things (Io
 - La cartella "mock_sensors" contiene lo script Python utilizzato per simulare l'invio dei dati da un sensore installato internamente al pullman.
 - I due script "install.sh" e "uninstall.sh" sono descritti nella prossima sezione "Configurazione dell'infrastruttura di Azure".
 ## Configurazione dell'infrastruttura di Azure
-Per effettuare il provisioning di tutte le risorse dell'infrastruttura, necessarie per il funzionamento di PISCO, è stato implementato uno script bash che permette di automatizzare l'intera procedura. É necessario modificare le variabili d'ambiente contenute nel file "install.sh", specificandone i valori per il proprio progetto. Successivamente, bisogna eseguire il prossimo comando
+Per automatizzare la procedura di provisioning di tutte le risorse necessarie per il funzionamento di PISCO, è stato sviluppato uno script Bash (install.sh). Per personalizzare l'installazione in base al tuo progetto, è fondamentale apportare le opportune modifiche alle variabili d'ambiente nel file "install.sh", specificando i valori appropriati. Una volta completata la configurazione, esegui il seguente comando per avviare il processo di installazione:
 ```bash
 
 bash install.sh
 
 ```
-contino
+Questo comando garantirà l'esecuzione del provisioning dell'infrastruttura con le impostazioni personalizzate definite nel file "install.sh".
+
+Un ulteriore script Bash (uninstall.sh) è stato implementato per automatizzare il processo di eliminazione di tutte le risorse precedentemente create. Per avviare questa procedura, esegui il seguente comando:
+```bash
+
+bash uninstall.sh
+
+```
+L'esecuzione di questo comando garantirà la corretta eliminazione di tutte le risorse create durante il provisioning, semplificando così il processo di deprovisioning dell'infrastruttura legata al progetto.
