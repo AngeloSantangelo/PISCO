@@ -20,3 +20,14 @@ PISCO è un sistema Cloud-based che sfrutta le tecnologie Internet of Things (Io
 ## Requisiti
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) per eseguire il provisioning dell'infrastruttura.
 - [Node.js (v20.9.0)](https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac), [TypeScript (v4.0.0)](https://www.typescriptlang.org/download#:~:text=across%20different%20machines.-,via%20npm,latest%20version%20(currently%205.3).) e [Prisma (v^5.7.1)](https://www.prisma.io/docs/getting-started/quickstart) per effettuare il deploy delle risorse.
+## Descrizione delle cartelle
+- La cartella az_function contiene i vari file di configurazione (.json), una cartella "prisma" dove è definito lo schema del database e, infine, una cartella "src/functions" contenente tutte le Azure Functions del progetto.
+- La cartella "front-end" contiene tutti i file html riguardanti l'interfaccia grafica e il logo di Pisco.
+- La cartella "mock_sensors" contiene lo script Python utilizzato per simulare l'invio dei dati da un sensore installato internamente al pullman.
+- I due script "install.sh" e "uninstall.sh" sono descritti nella prossima sezione "Configurazione dell'infrastruttura di Azure".
+## Configurazione dell'infrastruttura di Azure
+Per effettuare il provisioning di tutte le risorse dell'infrastruttura, necessarie per il funzionamento di PISCO, è stato implementato uno script bash che permette di automatizzare l'intera procedura. É necessario modificare le variabili d'ambiente contenute nel file "install.sh", specificandone i valori per il proprio progetto. Successivamente, bisogna eseguire il prossimo comando
+```bash
+#!/bin/bash
+
+echo "Hello, World!"
