@@ -1,16 +1,16 @@
-LOCATION="westeurope"
-RESOURCE_GROUP="piscoo"
-SQL_SERVER="piscooserver"
-SHADOW_DB="pisco_shadow"
-SQL_DATABASE="pisco_db"
-USERNAME="pisco"
-PASSWORD="#"
-IOT_HUB="piscooiothub"
-FUNCTION_APP="piscoofunction"
-STORAGE_ACCOUNT="piscoaccount"
-STREAM_JOB="pisco_job"
+LOCATION="my_location"
+RESOURCE_GROUP="my_resource_group"
+SQL_SERVER="my_server"
+SHADOW_DB="my_shadow_db"
+SQL_DATABASE="my_database"
+USERNAME="my_username"
+PASSWORD="my_password"
+IOT_HUB="my_iot_hub"
+FUNCTION_APP="my_function_app"
+STORAGE_ACCOUNT="my_storage_account"
+STREAM_JOB="my_stream_job"
 IOT_HUB_POLICY_NAME="iothubowner"
-OUTPUT_NAME="piscodatabase"
+OUTPUT_NAME="output_name_stream_job"
 
 
 echo "Login to Azure ..."
@@ -58,7 +58,7 @@ func azure functionapp publish $FUNCTION_APP
 
 
 echo "Creating stream analytics job $STREAM_JOB ..."
-az stream-analytics job create --name $STREAM_JOB --resource-group $RESOURCE_GROUP --location $LOCATION --transformation name="transformationtest" streaming-units=1 query="SELECT peopleNumber, idSensor INTO [$OUTPUT_NAME] FROM [$IOT_HUB]"
+az stream-analytics job create --name $STREAM_JOB --resource-group $RESOURCE_GROUP --location $LOCATION --transformation name="transformationtest" streaming-units=1 query="my_query_stream_job"
 
 
 # Prendere la chiave della policy dell'IoT Hub
