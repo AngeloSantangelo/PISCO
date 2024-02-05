@@ -1,5 +1,5 @@
-RESOURCE_GROUP="piscoo"
-STREAM_JOB="pisco_job"
+RESOURCE_GROUP="my_resource_group"
+STREAM_JOB="my_stream_job"
 
 echo "Stop the stream analytics job process"
 az stream-analytics job stop --job-name $STREAM_JOB --resource-group $RESOURCE_GROUP
