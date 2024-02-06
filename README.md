@@ -5,8 +5,8 @@ PISCO è un sistema ideato per compagnie di trasporto pubblico ed è stato reali
 ## Obiettivo e Descrizione
 PISCO è un sistema Cloud-based che sfrutta le tecnologie Internet of Things (IoT) per modernizzare la gestione del trasporto pubblico e per monitorare e gestire i pullman in maniera efficiente. L'obiettivo di PISCO è offrire un sistema di monitoraggio in tempo reale dell'afflusso dei passeggeri a bordo su tali mezzi attraverso l'utilizzo di sensori IoT installati internamente, fornendo informazioni e insight preziosi per ottimizzare le corse e migliorare l'efficienza operativa complessiva.
 ## Funzionalità
-- Creazione ed Eliminazione dei pullman.
-- Creazione ed Eliminazione dei sensori con annessa assegnazione al corrispondente pullman.
+- Creazione ed eliminazione dei pullman.
+- Creazione ed eliminazione dei sensori con annessa assegnazione al corrispondente pullman.
 - Visualizzazione in tempo reale dei dati inviati dai sensori mediante grafici che riporteranno esclusivamente i giorni in cui un pullman è stato in servizio, indicando il numero massimo di passeggeri saliti a bordo in ciascuna di tali giornate. L'azienda, in questo modo, può beneficiare di una visione chiara dell'affluenza giornaliera, consentendole di valutare la necessità di inserire ulteriori pullman e garantire un ambiente più sicuro evitando situazioni di sovraffollamento.
 ## Architettura di PISCO
 ![ArchitetturaPisco](https://github.com/AngeloSantangelo/PISCO/assets/115495018/1e32bb3f-8ee9-4e71-bd00-a28ca55bc449)
