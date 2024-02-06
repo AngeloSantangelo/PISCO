@@ -18,7 +18,7 @@ PISCO è un sistema Cloud-based che sfrutta le tecnologie Internet of Things (Io
 - __Azure Stream Analytics Job__ invia i dati elaborati ad SQL Database, dove verranno archiviati per un accesso successivo.
 - __Azure SQL Database__ archivia tutti i dati raccolti dai sensori e dalle Azure Function.
 - Le __Azure Functions__ rappresentano una componente serverless che risponde a eventi richiesti dalla Static Web App e hanno accesso al database. Verranno utilizzate anche per recuperare, dal database, i dati raccolti dai sensori e visualizzarli sottoforma di grafici all'interno della pagina web. 
-- L'__App Service__ è il componente che ospita l'applicazione web. L'utente interagirà con l'applicazione inviando richieste come creazione ed eliminazione di pullman e sensori, le quali verranno soddisfatte tramite le Azure Functions.
+- La __Azure Static Web App__ è il componente che ospita l'applicazione web e offre un'architettura serverless. L'utente interagisce con l'applicazione inviando richieste come creazione ed eliminazione di pullman e sensori, le quali vengono gestite tramite le Azure Functions.
 ## Requisiti
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) per eseguire il provisioning dell'infrastruttura.
 - [Node.js (v20.9.0)](https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac), [TypeScript (v4.0.0)](https://www.typescriptlang.org/download#:~:text=across%20different%20machines.-,via%20npm,latest%20version%20(currently%205.3).) e [Prisma (v^5.7.1)](https://www.prisma.io/docs/getting-started/quickstart) per effettuare il deploy delle risorse.
