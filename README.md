@@ -13,9 +13,9 @@ PISCO è un sistema Cloud-based che sfrutta le tecnologie Internet of Things (Io
 
 ## Descrizione dell'architettura
 - I __sensori__ __IoT__ sono dispositivi fisici che raccolgono dati dal mondo reale, ovvero il numero di persone all'interno di un pullman.
-- Dopo la creazione di un sensore, viene generato un suo 'gemello' in IoT Hub, che costituisce una rappresentazione virtuale dettagliata del dispositivo fisico. Questo __Device__ __Twin__ viene gestito e archiviato all'interno del servizio Azure IoT Hub.
-- __Azure IoT__ Hub invia i dati raccolti dai sensori al servizio Azure Stream Analytics Job, il quale si occupa di elaborarli in tempo reale eseguendo operazioni su di essi, come filtraggio e aggregazione.
-- __Azure Stream Analytics Job__ invia i dati elaborati ad SQL Database, dove verranno archiviati per un accesso successivo.
+- Dopo la creazione di un sensore, viene generato un suo 'gemello', che costituisce una rappresentazione virtuale dettagliata del dispositivo fisico. Questo __Device Twin__ viene gestito e archiviato all'interno del servizio Azure IoT Hub.
+- __Azure IoT Hub__ invia i dati raccolti dai sensori al servizio Azure Stream Analytics Job, il quale si occupa di elaborarli in tempo reale eseguendo operazioni su di essi, come filtraggio e aggregazione.
+- __Azure Stream Analytics Job__ invia i dati elaborati ad Azure SQL Database, dove verranno archiviati per un accesso successivo.
 - __Azure SQL Server__ rappresenta il motore di database che gestisce il flusso e l'accesso ai dati. È il punto centrale per archiviare e gestire tutti i dati provenienti dai sensori e elaborati dalle Azure Functions.
 - __Azure SQL Database__ è un servizio di database relazionale completamente gestito su Microsoft Azure. Rappresenta il luogo dove verranno archiviati tutti i dati provenienti dai sensori e elaborati dalle Azure Functions.
 - __Azure SQL Shadow Database__ è un servizio di database aggiuntivo creato nello stesso SQL Server. Tale database svolge un ruolo fondamentale nell'architettura, fungendo da copia di backup o replica dei dati principali presenti nel database principale.
@@ -26,7 +26,7 @@ PISCO è un sistema Cloud-based che sfrutta le tecnologie Internet of Things (Io
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) per eseguire il provisioning dell'infrastruttura.
 - [Node.js (v20.9.0)](https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac), [TypeScript (v4.0.0)](https://www.typescriptlang.org/download#:~:text=across%20different%20machines.-,via%20npm,latest%20version%20(currently%205.3).) e [Prisma (v^5.7.1)](https://www.prisma.io/docs/getting-started/quickstart) per effettuare il deploy delle risorse.
 ## Descrizione delle cartelle
-- La cartella az_function contiene i vari file di configurazione (.json), una cartella "prisma" dove è definito lo schema del database e, infine, una cartella "src/functions" contenente tutte le Azure Functions del progetto.
+- La cartella "az_function" contiene i vari file di configurazione (.json), una cartella "prisma" dove è definito lo schema del database e, infine, una cartella "src/functions" contenente tutte le Azure Functions del progetto.
 - La cartella "front-end" contiene tutti i file html riguardanti l'interfaccia grafica e il logo di Pisco.
 - La cartella "mock_sensors" contiene lo script Python utilizzato per simulare l'invio dei dati da un sensore installato internamente al pullman.
 - I due script "install.sh" e "uninstall.sh" sono descritti nella prossima sezione "Configurazione dell'infrastruttura di Azure".
