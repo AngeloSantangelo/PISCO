@@ -9,7 +9,7 @@ PISCO è un sistema Cloud-based che sfrutta le tecnologie Internet of Things (Io
 - Creazione ed Eliminazione dei sensori con annessa assegnazione al corrispondente pullman.
 - Visualizzazione in tempo reale dei dati inviati dai sensori mediante grafici che riporteranno esclusivamente i giorni in cui un pullman è stato in servizio, indicando il numero massimo di passeggeri saliti a bordo in ciascuna di tali giornate. L'azienda, in questo modo, può beneficiare di una visione chiara dell'affluenza giornaliera, consentendole di valutare la necessità di inserire ulteriori pullman e garantire un ambiente più sicuro evitando situazioni di sovraffollamento.
 ## Architettura di PISCO
-![ArchitetturaPisco](https://github.com/AngeloSantangelo/PISCO/assets/115495018/a01646f4-be81-448a-bd0e-c7f2ff605a19)
+![ArchitetturaPisco](https://github.com/AngeloSantangelo/PISCO/assets/115495018/948c35ee-68d2-4de9-9ab6-d3dade37c9d6)
 
 ## Descrizione dell'architettura
 - I __sensori__ __IoT__ sono dispositivi fisici che raccolgono dati dal mondo reale, ovvero il numero di persone all'interno di un pullman.
