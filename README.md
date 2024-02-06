@@ -31,16 +31,16 @@ PISCO è un sistema Cloud-based che sfrutta le tecnologie Internet of Things (Io
 - La cartella "mock_sensors" contiene lo script Python utilizzato per simulare l'invio dei dati da un sensore installato internamente al pullman.
 - I due script "install.sh" e "uninstall.sh" sono descritti nella prossima sezione "Configurazione dell'infrastruttura di Azure".
 ## Configurazione dell'infrastruttura di Azure
-Per automatizzare la procedura di provisioning di tutte le risorse necessarie per il funzionamento di PISCO, è stato sviluppato uno script Bash (install.sh). Per personalizzare l'installazione in base al tuo progetto, è fondamentale apportare le opportune modifiche alle variabili d'ambiente nel file "install.sh", specificando i valori appropriati. Una volta completata la configurazione, esegui il seguente comando per avviare il processo di installazione:
+Per automatizzare la procedura di provisioning di tutte le risorse necessarie per il funzionamento di PISCO, è stato sviluppato uno script Bash (install.sh). Per personalizzare l'installazione in base al tuo progetto, è fondamentale apportare le opportune modifiche alle variabili d'ambiente nel file "install.sh", specificando i valori appropriati per la propria architettura. Una volta completata la configurazione, esegui il seguente comando per avviare il processo di installazione:
 ```bash
 
 bash install.sh
 
 ```
-Questo comando garantirà l'esecuzione del provisioning dell'infrastruttura con le impostazioni personalizzate definite nel file "install.sh". Tuttavia, la creazione delle [Azure Static Web Apps](https://learn.microsoft.com/en-us/azure/static-web-apps/get-started-portal?tabs=vanilla-javascript&pivots=github) non è inclusa all'interno di questo script. Pertanto, per configurare correttamente tale servizio, è necessario eseguire manualmente il processo previsto direttamente su Azure.
+Questo comando garantirà l'esecuzione del provisioning dell'infrastruttura con le impostazioni personalizzate definite nel file "install.sh". Tuttavia, la creazione della [Azure Static Web App](https://learn.microsoft.com/en-us/azure/static-web-apps/get-started-portal?tabs=vanilla-javascript&pivots=github) non è inclusa all'interno di questo script. Pertanto, per configurare correttamente tale servizio, è necessario eseguire manualmente il processo previsto direttamente su Azure.
 
 
-Un ulteriore script Bash (uninstall.sh) è stato implementato per automatizzare il processo di eliminazione di tutte le risorse precedentemente create. Per avviare questa procedura, esegui il seguente comando:
+Un ulteriore script Bash (uninstall.sh) è stato implementato per automatizzare il processo di eliminazione di tutte le risorse precedentemente create. Analogamente al processo di installazione, è necessario personalizzare le variabili d'ambiente per la propria architettura. Per avviare questa procedura, esegui il seguente comando:
 ```bash
 
 bash uninstall.sh
