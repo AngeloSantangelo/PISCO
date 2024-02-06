@@ -12,7 +12,8 @@ PISCO è un sistema Cloud-based che sfrutta le tecnologie Internet of Things (Io
 ![ArchitetturaPisco](https://github.com/AngeloSantangelo/PISCO/assets/115495018/0344eb1d-a0b9-4f9a-984f-77962d6a19a0)
 
 ## Descrizione dell'architettura
-- I sensori IoT sono dispositivi fisici che raccolgono dati dal mondo reale, ovvero il numero di persone all'interno di un pullman, e vengono gestiti e archiviati all'interno del servizio Azure IoT Hub.
+- I __sensori__ __IoT__ sono dispositivi fisici che raccolgono dati dal mondo reale, ovvero il numero di persone all'interno di un pullman.
+- Dopo la creazione di un sensore, viene generato un suo 'gemello' in IoT Hub, che costituisce una rappresentazione virtuale dettagliata del dispositivo fisico. Questo Device Twin viene gestito e archiviato all'interno del servizio Azure IoT Hub.
 - Azure IoT Hub invia i dati raccolti dai sensori al servizio Azure Stream Analytics Job, il quale si occupa di elaborarli in tempo reale eseguendo operazioni su di essi, come filtraggio e aggregazione.
 - Azure Stream Analytics Job invia i dati elaborati ad SQL Database, dove verranno archiviati per un accesso successivo.
 - Azure SQL Database archivia tutti i dati raccolti dai sensori e dalle Azure Function.
