@@ -24,7 +24,7 @@ PISCO è un sistema Cloud-based che sfrutta le tecnologie Internet of Things (Io
 - La __Azure Static Web App__ è il componente che ospita l'applicazione web e offre un'architettura serverless. L'utente interagisce con l'applicazione inviando richieste come creazione ed eliminazione di pullman e sensori, le quali vengono gestite tramite le Azure Functions.
 ## Requisiti
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) per eseguire il provisioning dell'infrastruttura.
-- [Node.js (v20.9.0)](https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac), [TypeScript (v4.0.0)](https://www.typescriptlang.org/download#:~:text=across%20different%20machines.-,via%20npm,latest%20version%20(currently%205.3).), [Prisma (v^5.7.1)](https://www.prisma.io/docs/getting-started/quickstart) e [Python (v^3](https://www.python.org/downloads/) per effettuare il deploy delle risorse.
+- [Node.js (v20.9.0)](https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac), [TypeScript (v4.0.0)](https://www.typescriptlang.org/download#:~:text=across%20different%20machines.-,via%20npm,latest%20version%20(currently%205.3).), [Prisma (v^5.7.1)](https://www.prisma.io/docs/getting-started/quickstart) e [Python (v^3)](https://www.python.org/downloads/) per effettuare il deploy delle risorse.
 ## Descrizione delle cartelle
 - La cartella "az_function" contiene i vari file di configurazione (.json), una cartella "prisma" dove è definito lo schema del database e, infine, una cartella "src/functions" contenente tutte le Azure Functions del progetto.
 - La cartella "front-end" contiene tutti i file html riguardanti l'interfaccia grafica e il logo di Pisco.
