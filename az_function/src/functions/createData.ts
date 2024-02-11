@@ -11,6 +11,7 @@ export async function createData(request: HttpRequest, context: InvocationContex
         const peopleNumber = data.peopleNumber;
         const idSensor = data.idSensor;
 
+        // Carica db
         for(let month = 1; month <= 12; month++)
         {
             for(let j=0; j<10; j++)
@@ -23,7 +24,6 @@ export async function createData(request: HttpRequest, context: InvocationContex
                         date: date
                     }
                 });
-                
             }
         }
     } catch (error) {
