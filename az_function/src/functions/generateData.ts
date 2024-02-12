@@ -2,7 +2,7 @@ import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/fu
 import { PrismaClient } from '@prisma/client'
 
 
-export async function createData(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+export async function generateData(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     
     const prisma = new PrismaClient()
     
@@ -11,7 +11,6 @@ export async function createData(request: HttpRequest, context: InvocationContex
         const peopleNumber = data.peopleNumber;
         const idSensor = data.idSensor;
 
-        // Carica db
         for(let month = 1; month <= 12; month++)
         {
             for(let j=0; j<10; j++)
@@ -34,8 +33,8 @@ export async function createData(request: HttpRequest, context: InvocationContex
     }
 };
 
-app.http('createData', {
+app.http('generateData', {
     methods: ['GET', 'POST', 'OPTIONS'],
     authLevel: 'anonymous',
-    handler: createData
+    handler: generateData
 });
