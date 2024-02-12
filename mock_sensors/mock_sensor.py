@@ -3,7 +3,7 @@ import random
 import time
 from azure.iot.device import IoTHubDeviceClient, Message
 
-idSensor = 3
+idSensor = 1
 MSG_TXT = '{{"peopleNumber": {number}, "idSensor": {idSensor}}}'
 
 def simulate_sensor(client):
@@ -24,7 +24,7 @@ def simulate_sensor(client):
 def main():
     print("Press Ctrl-C to exit")
 
-    client = IoTHubDeviceClient.create_from_connection_string("HostName=piscooiothub.azure-devices.net;DeviceId=3;SharedAccessKey=VzbXTMS2fHYhr2tI3HaJe4YmwatbbzWl7AIoTMG2ojw=")
+    client = IoTHubDeviceClient.create_from_connection_string("HostName=piscooiothub.azure-devices.net;DeviceId=1;SharedAccessKey=QEGJXWX4I5+i+zvrcSmMdjBunRVnWv8APAIoTBFH0xM=")
 
     try:
         simulate_sensor(client)
